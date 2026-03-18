@@ -1,0 +1,31 @@
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="logo" href="#home" (click)="closeMenu()">Jatsen<span>Dev</span></a>
+
+    <button
+      class="theme-toggle"
+      type="button"
+      (click)="toggleTheme()"
+      [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+    >
+      {{ isDarkMode ? 'Light' : 'Dark' }}
+    </button>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="isMenuOpen"
+      aria-label="Toggle navigation"
+    >
+      {{ isMenuOpen ? 'Close' : 'Menu' }}
+    </button>
+
+    <nav aria-label="Primary" [class.open]="isMenuOpen">
+      <a *ngFor="let link of links" [href]="'#' + link.id" (click)="closeMenu()">{{ link.label }}</a>
+      <a class="btn-contact mobile" href="#contact" (click)="closeMenu()">Contact Me</a>
+    </nav>
+
+    <a class="btn-contact desktop" href="#contact">Contact Me</a>
+  </div>
+</header>

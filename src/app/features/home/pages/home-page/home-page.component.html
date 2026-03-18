@@ -1,0 +1,177 @@
+<main id="home">
+  <section class="hero section reveal">
+    <div class="container hero-grid">
+      <div>
+        <p class="badge">{{ content.hero.badge }}</p>
+        <h1>
+          {{ content.hero.titleLead }}
+          <span>{{ content.hero.titleAccent }}</span>
+        </h1>
+        <p class="lead">{{ content.hero.summary }}</p>
+        <a class="btn-primary" [href]="content.hero.ctaLink">{{ content.hero.ctaLabel }}</a>
+      </div>
+      <div class="hero-photo-blend" aria-hidden="true">
+        <span class="hero-orb hero-orb-main"></span>
+        <span class="hero-orb hero-orb-accent"></span>
+        <div class="hero-photo-shell" *ngIf="!heroImageMissing">
+          <img
+            class="hero-photo"
+            [src]="heroImageSrc"
+            (error)="onHeroImageError()"
+            alt="Portrait of Engr. Jatsen P. Gesta in formal attire"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section reveal">
+    <div class="container">
+      <p class="section-kicker">About Me</p>
+      <h2 class="about-title">{{ content.about.heading }}</h2>
+
+      <div class="about-layout">
+        <article class="surface-card about-main hover-lift">
+          <p class="section-copy">{{ content.about.description }}</p>
+
+          <div class="about-tabs" role="tablist" aria-label="About focus">
+            <button
+              *ngFor="let tab of aboutTabs"
+              type="button"
+              class="about-tab"
+              [class.active]="activeAboutTab === tab.id"
+              (click)="selectAboutTab(tab.id)"
+            >
+              {{ tab.label }}
+            </button>
+          </div>
+
+          <div class="about-panel">
+            <p>{{ selectedAboutTab.text }}</p>
+            <ul class="about-list">
+              <li *ngFor="let item of selectedAboutTab.items">{{ item }}</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="surface-card about-side hover-lift">
+          <h3>Snapshot</h3>
+          <div class="about-stats">
+            <div *ngFor="let stat of content.about.stats" class="about-stat">
+              <div class="about-stat-head">
+                <span>{{ stat.label }}</span>
+                <strong>{{ stat.value }}</strong>
+              </div>
+              <div class="bar">
+                <span></span>
+              </div>
+            </div>
+          </div>
+          <ul class="checklist">
+            <li *ngFor="let item of content.about.highlights">{{ item }}</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section alt reveal">
+    <div class="container">
+      <p class="section-kicker">My Services</p>
+      <h2>Services I Offer</h2>
+      <div class="card-grid">
+        <article *ngFor="let service of content.services" class="surface-card hover-lift">
+          <h3>{{ service.title }}</h3>
+          <p>{{ service.description }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="resume" class="section reveal">
+    <div class="container">
+      <p class="section-kicker">My Resume</p>
+      <h2>Professional Experience</h2>
+      <div class="stacked">
+        <article *ngFor="let exp of content.experiences" class="surface-card hover-lift">
+          <div class="row-head">
+            <h3>{{ exp.role }} - {{ exp.company }}</h3>
+            <span>{{ exp.period }}</span>
+          </div>
+          <p class="muted">{{ exp.location }}</p>
+          <ul>
+            <li *ngFor="let bullet of exp.bullets">{{ bullet }}</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 class="mt-lg">Education</h2>
+      <div class="stacked">
+        <article *ngFor="let edu of content.education" class="surface-card hover-lift">
+          <div class="row-head">
+            <h3>{{ edu.degree }}</h3>
+            <span>{{ edu.period }}</span>
+          </div>
+          <p>{{ edu.school }}</p>
+          <ul>
+            <li *ngFor="let detail of edu.details">{{ detail }}</li>
+          </ul>
+        </article>
+      </div>
+
+      <h2 class="mt-lg">Skills</h2>
+      <div class="card-grid">
+        <article *ngFor="let skill of content.skillCategories" class="surface-card hover-lift">
+          <h3>{{ skill.category }}</h3>
+          <ul>
+            <li *ngFor="let item of skill.items">{{ item }}</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="portfolio" class="section alt reveal">
+    <div class="container">
+      <p class="section-kicker">My Portfolio</p>
+      <h2>Selected Work</h2>
+
+      <div class="filter-chips" role="tablist" aria-label="Project categories">
+        <button
+          *ngFor="let category of projectCategories"
+          type="button"
+          class="chip"
+          [class.active]="activeCategory === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </button>
+      </div>
+
+      <div class="card-grid">
+        <article *ngFor="let project of filteredProjects" class="surface-card hover-lift">
+          <p class="muted">{{ project.stack }}</p>
+          <h3>{{ project.name }}</h3>
+          <p>{{ project.summary }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section reveal">
+    <div class="container">
+      <p class="section-kicker">Contact</p>
+      <h2>Let's Work Together</h2>
+      <div class="surface-card contact-grid hover-lift">
+        <p><strong>Phone:</strong> {{ content.contact.phone }}</p>
+        <p><strong>Email:</strong> {{ content.contact.email }}</p>
+        <p><strong>LinkedIn:</strong> {{ content.contact.linkedin }}</p>
+        <p><strong>Address:</strong> {{ content.contact.location }}</p>
+      </div>
+    </div>
+  </section>
+
+  <button *ngIf="showBackToTop" class="to-top" type="button" (click)="scrollTop()" aria-label="Back to top">
+    ↑
+  </button>
+</main>

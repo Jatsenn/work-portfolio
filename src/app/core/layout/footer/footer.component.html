@@ -1,0 +1,17 @@
+<footer class="site-footer">
+  <div class="container footer-wrap">
+    <div class="footer-logo">Connect</div>
+    <nav class="socials" aria-label="Social links">
+      <a
+        *ngFor="let social of socials"
+        [href]="social.href"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="social.label"
+        [title]="social.label"
+      >
+        <i [class]="social.icon" aria-hidden="true"></i>
+      </a>
+    </nav>
+  </div>
+</footer>
