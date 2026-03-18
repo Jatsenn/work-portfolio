@@ -6,6 +6,7 @@ import {
   HostListener,
   OnDestroy,
 } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HOME_CONTENT } from '../../data/home-content';
 
 interface AboutTab {
@@ -24,8 +25,17 @@ interface AboutTab {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomePageComponent implements AfterViewInit, OnDestroy {
+  constructor(private readonly sanitizer: DomSanitizer) {}
+
   readonly content = HOME_CONTENT;
   readonly projectCategories = ['All', ...new Set(this.content.projects.map((project) => project.category))];
+  readonly serviceIcons = [
+    'fa-solid fa-layer-group',
+    'fa-solid fa-code',
+    'fa-solid fa-gauge-high',
+    'fa-solid fa-screwdriver-wrench',
+  ];
+  readonly projectIcons = ['fa-solid fa-laptop-code', 'fa-solid fa-diagram-project', 'fa-solid fa-cloud'];
   readonly aboutTabs: AboutTab[] = [
     {
       id: 'what-i-do',
@@ -59,13 +69,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     },
   ];
   private readonly heroImageCandidates = [
-    'assets/images/jatsen-custom-hero.svg',
     'assets/images/jatsen-profile.png',
-    'assets/images/jatsen-profile.jpg',
-    'assets/images/jatsen-profile.jpeg',
-    '/jatsen-profile.jpg',
-    '/jatsen-profile.jpeg',
-    '/jatsen-profile.png',
   ];
 
   activeCategory = 'All';
@@ -110,6 +114,10 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     }
 
     this.heroImageMissing = true;
+  }
+
+  getSafePreviewUrl(url: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   @HostListener('window:scroll')

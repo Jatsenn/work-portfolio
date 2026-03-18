@@ -51,6 +51,8 @@ export interface ProjectItem {
   category: string;
   stack: string;
   summary: string;
+  liveUrl?: string;
+  previewImage?: string;
 }
 
 export interface PortfolioContent {

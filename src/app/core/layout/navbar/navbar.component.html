@@ -1,15 +1,26 @@
 <header class="site-header">
   <div class="container nav-wrap">
-    <a class="logo" href="#home" (click)="closeMenu()">Jatsen<span>Dev</span></a>
+    <a class="logo" href="#home" (click)="onNavClick($event, 'home')">Jatsen<span>Dev</span></a>
 
-    <button
-      class="theme-toggle"
-      type="button"
-      (click)="toggleTheme()"
-      [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-    >
-      {{ isDarkMode ? 'Light' : 'Dark' }}
-    </button>
+    <div class="theme-guide-anchor">
+      <button
+        class="theme-toggle"
+        type="button"
+        (click)="toggleTheme()"
+        [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+      >
+        {{ isDarkMode ? 'Light' : 'Dark' }}
+      </button>
+
+      <div *ngIf="showThemePrompt" class="theme-guide" role="dialog" aria-label="Theme guide">
+        <p>Tip: You can switch between light and dark mode here.</p>
+        <div class="theme-guide-actions">
+          <button type="button" class="theme-choice" (click)="chooseTheme('light')">Light</button>
+          <button type="button" class="theme-choice" (click)="chooseTheme('dark')">Dark</button>
+          <button type="button" class="theme-skip" (click)="dismissThemePrompt()">Got it</button>
+        </div>
+      </div>
+    </div>
 
     <button
       class="menu-toggle"
@@ -22,10 +33,10 @@
     </button>
 
     <nav aria-label="Primary" [class.open]="isMenuOpen">
-      <a *ngFor="let link of links" [href]="'#' + link.id" (click)="closeMenu()">{{ link.label }}</a>
-      <a class="btn-contact mobile" href="#contact" (click)="closeMenu()">Contact Me</a>
+      <a *ngFor="let link of links" [href]="'#' + link.id" (click)="onNavClick($event, link.id)">{{ link.label }}</a>
+      <a class="btn-contact mobile" href="#contact" (click)="onNavClick($event, 'contact')">Contact Me</a>
     </nav>
 
-    <a class="btn-contact desktop" href="#contact">Contact Me</a>
+    <a class="btn-contact desktop" href="#contact" (click)="onNavClick($event, 'contact')">Contact Me</a>
   </div>
 </header>

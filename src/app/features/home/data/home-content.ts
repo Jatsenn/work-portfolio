@@ -104,6 +104,13 @@ export const HOME_CONTENT: PortfolioContent = {
   ],
   projects: [
     {
+      name: 'Frost and Grounds Website',
+      category: 'Web App',
+      stack: 'Frontend Application',
+      summary: 'Working deployed web application for Frost and Grounds with modern UI and production-ready flow.',
+      liveUrl: 'https://v0-frost-and-grounds-website-phi.vercel.app/',
+    },
+    {
       name: 'PET Bottle to Points System',
       category: 'Web App',
       stack: 'Angular + SQL',
