@@ -1,5 +1,5 @@
 .section {
-  padding: 80px 0;
+  padding: 112px 0;
 }
 
 .section.alt {
@@ -13,7 +13,7 @@
 .hero-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
-  gap: 32px;
+  gap: 56px;
   align-items: center;
 }
 
@@ -25,9 +25,11 @@
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 4rem);
-  line-height: 1.05;
+  font-size: clamp(2rem, 4.3vw, 4.1rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
   margin: 0;
+  max-width: 14ch;
 }
 
 h1 span {
@@ -35,13 +37,15 @@ h1 span {
 }
 
 h2 {
-  font-size: clamp(1.6rem, 3.2vw, 2.4rem);
-  margin: 0 0 16px;
+  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
 }
 
 h3 {
-  margin: 0 0 10px;
-  font-size: 1.3rem;
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
 }
 
 .lead,
@@ -52,8 +56,8 @@ h3 {
 
 .lead,
 .section-copy {
-  max-width: 70ch;
-  margin-bottom: 24px;
+  max-width: 62ch;
+  margin-bottom: 32px;
 }
 
 .btn-primary {
@@ -62,13 +66,14 @@ h3 {
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  padding: 14px 24px;
-  border-radius: 12px;
-  transition: transform 0.2s ease;
+  padding: 15px 28px;
+  border-radius: 14px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(255, 106, 0, 0.28);
 }
 
 .hero-photo {
@@ -135,8 +140,8 @@ h3 {
 .surface-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 14px;
-  padding: 24px;
+  border-radius: 18px;
+  padding: 30px;
 }
 
 .about-title {
@@ -146,7 +151,7 @@ h3 {
 .about-layout {
   display: grid;
   grid-template-columns: 1.35fr 1fr;
-  gap: 18px;
+  gap: 24px;
 }
 
 .about-main,
@@ -165,9 +170,9 @@ h3 {
 
 .about-tabs {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin: 16px 0 14px;
+  margin: 20px 0 18px;
 }
 
 .about-tab {
@@ -190,8 +195,8 @@ h3 {
 
 .about-panel {
   border: 1px dashed var(--color-border);
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: 14px;
+  padding: 18px;
   background: color-mix(in oklab, var(--color-surface), var(--color-accent) 4%);
 }
 
@@ -256,7 +261,7 @@ h3 {
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: 20px;
 }
 
 .stat {
@@ -277,7 +282,7 @@ h3 {
 
 .stacked {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .row-head {
@@ -289,7 +294,7 @@ h3 {
 }
 
 .mt-lg {
-  margin-top: 32px;
+  margin-top: 44px;
 }
 
 .contact-grid {
@@ -299,9 +304,9 @@ h3 {
 
 .filter-chips {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin: 0 0 20px;
+  margin: 4px 0 26px;
 }
 
 .chip {
@@ -323,12 +328,12 @@ h3 {
 }
 
 .hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 36px rgba(0, 0, 0, 0.1);
 }
 
 .reveal {
@@ -376,7 +381,7 @@ h3 {
 
 @media (max-width: 767px) {
   .section {
-    padding: 56px 0;
+    padding: 72px 0;
   }
 
   .hero-grid,

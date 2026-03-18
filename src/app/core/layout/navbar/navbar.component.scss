@@ -10,13 +10,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  min-height: 84px;
+  gap: 28px;
+  min-height: 92px;
   position: relative;
 }
 
 .logo {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: 800;
   color: var(--color-text);
   text-decoration: none;
@@ -28,7 +28,7 @@
 
 nav {
   display: flex;
-  gap: 28px;
+  gap: 34px;
 }
 
 nav a {
@@ -42,8 +42,8 @@ nav a {
   color: #fff;
   text-decoration: none;
   font-weight: 700;
-  padding: 12px 20px;
-  border-radius: 10px;
+  padding: 12px 22px;
+  border-radius: 12px;
 }
 
 .theme-toggle,
