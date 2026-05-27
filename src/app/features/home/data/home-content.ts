@@ -5,7 +5,7 @@ export const HOME_CONTENT: PortfolioContent = {
   role: 'Software Engineer',
   contact: {
     phone: '+63 962 192 6650',
-    email: 'gestajatsen@gmail.com',
+    email: 'jatsen.gesta99@gmail.com',
     linkedin: 'linkedin.com/in/jatsengesta',
     location: 'Trece Martires, Cavite, Philippines',
   },
@@ -56,7 +56,8 @@ export const HOME_CONTENT: PortfolioContent = {
     {
       role: 'Software Engineer',
       company: 'E-Science Corporation',
-      location: 'Muntinlupa City',
+      location: 'Muntinlupa City, Philippines',
+      type: 'Full-time (Hybrid)',
       period: 'July 2023 - Present',
       bullets: [
         'Develop and maintain production full-stack applications following company standards.',
@@ -65,17 +66,20 @@ export const HOME_CONTENT: PortfolioContent = {
         'Optimize SQL queries and scripts for system performance and data reliability.',
         'Collaborate with developers and testers to release stable application features.',
       ],
+      tags: ['Angular', 'TypeScript', 'Java', 'SQL', 'AWS', 'Git', 'Agile'],
     },
     {
       role: 'Software Engineer Intern',
       company: 'E-Science Corporation',
-      location: 'Muntinlupa City',
+      location: 'Muntinlupa City, Philippines',
+      type: 'Internship (On-site)',
       period: 'March 2023 - June 2023',
       bullets: [
         'Assisted in developing API features including CRUD operations.',
         'Practiced SQL query validation for file uploads and data processing.',
         'Applied version control, debugging, and real-world development workflows.',
       ],
+      tags: ['Angular', 'Java', 'SQL', 'Git'],
     },
   ],
   education: [
@@ -84,7 +88,7 @@ export const HOME_CONTENT: PortfolioContent = {
       school: 'Technological University of the Philippines - Dasmarinas, Cavite',
       period: '2019 - 2023',
       details: [
-        'Relevant coursework: Data Structures & Algorithms, OOP, Python, Full-Stack Web Development, SQL Database',
+        'Relevant coursework: Data Structures & Algorithms, OOP, Python, Full-Stack Web Development, SQL Database, Computer Networks, Software Engineering, Operating Systems',
       ],
     },
   ],

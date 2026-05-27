@@ -1,2 +1,9 @@
 @use './styles/main';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
+
+/* Hide Cal.com branding */
+.cal-embed-container > div:last-child:not(iframe),
+[data-cal-namespace] ~ div,
+#cal-booking-placeholder ~ div {
+  display: none !important;
+}

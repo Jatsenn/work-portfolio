@@ -1,0 +1,128 @@
+<main class="sm-page">
+
+  <section class="sm-hero">
+    <div class="sm-hero__eyebrow">CONNECT / COLLABORATE / CREATE</div>
+    <div class="sm-hero__layout">
+      <div class="sm-hero__left">
+        <h1 class="sm-hero__title">
+          <span class="sm-title-solid">SEND A</span>
+          <span class="sm-title-muted">MESSAGE</span>
+          <span class="sm-title-solid">TO ME</span>
+        </h1>
+      </div>
+      <div class="sm-hero__right">
+        <img class="sm-hero__avatar" src="assets/images/jatsen-profile.png" alt="Jatsen Gesta" />
+      </div>
+    </div>
+    <div class="sm-cta-row">
+      <a class="sm-btn sm-btn--secondary" routerLink="/book-call">
+        <i class="fa-solid fa-phone"></i> Book a Call
+      </a>
+      <a class="sm-btn sm-btn--primary" href="#message-form">
+        <i class="fa-regular fa-comment"></i> Send a Message
+      </a>
+    </div>
+  </section>
+
+  <section id="message-form" class="sm-section">
+
+    <!-- Success state -->
+    <div class="sm-card sm-success" *ngIf="state === 'success'">
+      <i class="fa-solid fa-circle-check sm-success__icon"></i>
+      <h2 class="sm-success__title">Message Sent!</h2>
+      <p class="sm-success__sub">Thanks for reaching out. I'll get back to you as soon as possible.</p>
+      <button class="sm-btn sm-btn--primary" (click)="reset()">Send Another</button>
+    </div>
+
+    <!-- Rate limited state -->
+    <div class="sm-card sm-error-card" *ngIf="isRateLimited && state !== 'success'">
+      <i class="fa-solid fa-clock sm-error-card__icon"></i>
+      <p>Too many submissions. Please wait a few minutes before trying again.</p>
+    </div>
+
+    <!-- Form -->
+    <div class="sm-card" *ngIf="state !== 'success' && !isRateLimited">
+      <div class="sm-card__header">
+        <h2 class="sm-card__title">Send me a message</h2>
+        <p class="sm-card__sub">Have a question or want to work together? Drop me a message!</p>
+      </div>
+
+      <form #formRef="ngForm" (ngSubmit)="submit(formRef)" novalidate autocomplete="off">
+
+        <!-- Honeypot (hidden bot trap) -->
+        <input type="text" name="_trap" [(ngModel)]="honeypot" tabindex="-1" aria-hidden="true" class="sm-honeypot" />
+
+        <div class="sm-field">
+          <label class="sm-label">Name <span class="sm-optional">(optional)</span></label>
+          <input
+            class="sm-input"
+            type="text"
+            name="name"
+            [(ngModel)]="form.name"
+            placeholder="Your name"
+            maxlength="100"
+          />
+        </div>
+
+        <div class="sm-field">
+          <label class="sm-label">Email <span class="sm-required">*</span></label>
+          <input
+            class="sm-input"
+            type="email"
+            name="email"
+            [(ngModel)]="form.email"
+            required
+            email
+            placeholder="your@email.com"
+            #emailField="ngModel"
+          />
+          <span class="sm-field-error" *ngIf="emailField.invalid && emailField.touched">
+            Please enter a valid email address.
+          </span>
+        </div>
+
+        <div class="sm-field">
+          <div class="sm-label-row">
+            <label class="sm-label">Message <span class="sm-required">*</span></label>
+            <span class="sm-char-count" [class.sm-char-count--warn]="charCount > 900">
+              {{ charCount }}/{{ maxLength }}
+            </span>
+          </div>
+          <textarea
+            class="sm-input sm-textarea"
+            name="message"
+            [(ngModel)]="form.message"
+            required
+            [maxlength]="maxLength"
+            placeholder="What would you like to discuss?"
+            #messageField="ngModel"
+          ></textarea>
+          <span class="sm-field-error" *ngIf="messageField.invalid && messageField.touched">
+            Message is required.
+          </span>
+        </div>
+
+        <div class="sm-error-banner" *ngIf="state === 'error'">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          Something went wrong. Please try again or email me directly.
+        </div>
+
+        <button
+          type="submit"
+          class="sm-submit-btn"
+          [disabled]="state === 'sending' || formRef.invalid"
+        >
+          <ng-container *ngIf="state !== 'sending'">
+            <i class="fa-solid fa-paper-plane"></i> Send Message
+          </ng-container>
+          <ng-container *ngIf="state === 'sending'">
+            <i class="fa-solid fa-spinner fa-spin"></i> Sending...
+          </ng-container>
+        </button>
+
+      </form>
+    </div>
+
+  </section>
+
+</main>

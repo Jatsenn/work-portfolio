@@ -30,8 +30,10 @@ export interface ExperienceItem {
   role: string;
   company: string;
   location: string;
+  type: string;
   period: string;
   bullets: string[];
+  tags: string[];
 }
 
 export interface EducationItem {

@@ -1,144 +1,338 @@
-<main id="home">
-  <section class="hero section reveal">
-    <div class="container hero-grid">
-      <div>
-        <p class="badge">{{ content.hero.badge }}</p>
-        <h1>
-          {{ content.hero.titleLead }}
-          <span>{{ content.hero.titleAccent }}</span>
-        </h1>
-        <p class="lead">{{ content.hero.summary }}</p>
-        <a class="btn-primary" [href]="content.hero.ctaLink">{{ content.hero.ctaLabel }}</a>
-      </div>
-      <div class="hero-photo-blend" aria-hidden="true">
-        <div class="hero-chip hero-chip-top">
-          <i class="fa-brands fa-angular" aria-hidden="true"></i>
-          <span>Angular</span>
+<canvas #shootingStars class="shooting-stars-canvas" aria-hidden="true" style="display:none"></canvas>
+<main id="page">
+  <div class="cursor-dot" #cursorDot></div>
+  <div class="cursor-ring" #cursorRing></div>
+  <div class="project-cursor" #projectCursor aria-hidden="true">
+    <svg viewBox="0 0 140 140" class="project-cursor-svg">
+      <path id="projectCursorPath" d="M 70,70 m -46,0 a 46,46 0 1,1 92,0 a 46,46 0 1,1 -92,0" fill="none"/>
+      <text><textPath href="#projectCursorPath" startOffset="0%">VISIT PROJECT · VISIT PROJECT · </textPath></text>
+    </svg>
+    <i class="fa-regular fa-eye project-cursor-eye"></i>
+  </div>
+  <section id="home" class="hero section">
+
+    <!-- top center pill -->
+    <div class="hero-pill-wrap">
+      <button class="hero-pill" type="button" (click)="toggleAvailCard()">
+        <span class="hero-pill-dot" aria-hidden="true"></span>
+        <span>Available for work</span>
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </button>
+      <div class="avail-card" [class.open]="availCardOpen">
+        <div class="avail-card__header">
+          <span class="avail-card__dot" aria-hidden="true"></span>
+          <span class="avail-card__status">Open to opportunities</span>
         </div>
-        <div class="hero-chip hero-chip-mid">
-          <i class="fa-solid fa-database" aria-hidden="true"></i>
-          <span>SQL</span>
+        <div class="avail-card__rows">
+          <div class="avail-card__row"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><span>Freelance &amp; Full-time roles</span></div>
+          <div class="avail-card__row"><i class="fa-solid fa-earth-asia" aria-hidden="true"></i><span>Remote / Hybrid</span></div>
+          <div class="avail-card__row"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Responds within 24 hrs</span></div>
         </div>
-        <div class="hero-chip hero-chip-bottom">
-          <i class="fa-brands fa-aws" aria-hidden="true"></i>
-          <span>AWS</span>
-        </div>
-        <div class="hero-photo-shell" *ngIf="!heroImageMissing">
-          <img
-            class="hero-photo"
-            [src]="heroImageSrc"
-            (error)="onHeroImageError()"
-            alt="Portrait of Engr. Jatsen P. Gesta in formal attire"
-          />
+        <div class="avail-card__actions">
+          <button class="avail-card__copy" type="button" (click)="copyEmail()">
+            <i class="fa-solid" [class.fa-copy]="!emailCopied" [class.fa-check]="emailCopied" aria-hidden="true"></i>
+            <span>{{ emailCopied ? 'Email copied!' : 'Copy email' }}</span>
+          </button>
+          <a class="avail-card__book" routerLink="/book-call" (click)="availCardOpen = false">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            <span>Book a Call</span>
+          </a>
         </div>
       </div>
     </div>
+
+    <!-- center: giant name + subtitle -->
+    <div class="hero-center">
+      <div class="hero-name" aria-label="JAT">JAT</div>
+      <div class="hero-sub">
+        <p class="hero-sub-lead">I craft intelligent software that</p>
+        <p class="hero-sub-italic">defines modern innovation.</p>
+      </div>
+    </div>
+
+    <!-- bottom row -->
+    <div class="hero-bottom">
+      <div class="hero-corner">
+        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+        <div>
+          <span class="hero-corner-top">Based in Trece Martires,</span>
+          <span class="hero-corner-bot">Philippines</span>
+        </div>
+      </div>
+      <div class="hero-corner">
+        <div class="hero-corner-text-right">
+          <span class="hero-corner-top">Software Engineer,</span>
+          <span class="hero-corner-bot">&amp; AI Engineer</span>
+        </div>
+        <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+      </div>
+    </div>
+
   </section>
 
   <section id="about" class="section reveal">
-    <div class="container">
-      <p class="section-kicker">About Me</p>
-      <h2 class="about-title">{{ content.about.heading }}</h2>
-
-      <div class="about-layout">
-        <article class="surface-card about-main hover-lift">
-          <p class="section-copy">{{ content.about.description }}</p>
-
-          <div class="about-tabs" role="tablist" aria-label="About focus">
-            <button
-              *ngFor="let tab of aboutTabs"
-              type="button"
-              class="about-tab"
-              [class.active]="activeAboutTab === tab.id"
-              (click)="selectAboutTab(tab.id)"
-            >
-              {{ tab.label }}
-            </button>
+    <div class="container about-bento">
+      <div class="about-grid" role="list">
+        <article class="about-card about-card--name" role="listitem">
+          <p class="about-card-label">PROFILE</p>
+          <div class="about-name-block">
+            <div class="about-name-big">JATSEN</div>
+            <div class="about-name-sub">Software Engineer • AI Engineer</div>
           </div>
-
-          <div class="about-panel">
-            <p>{{ selectedAboutTab.text }}</p>
-            <ul class="about-list">
-              <li *ngFor="let item of selectedAboutTab.items">{{ item }}</li>
-            </ul>
+          <div class="about-links" aria-label="Social links">
+            <a class="about-link" href="https://{{ content.contact.linkedin }}" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a class="about-link is-disabled" href="#" aria-label="GitHub (coming soon)" aria-disabled="true" tabindex="-1">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+            </a>
+            <a class="about-link is-disabled" href="#" aria-label="X (coming soon)" aria-disabled="true" tabindex="-1">
+              <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+            </a>
           </div>
         </article>
 
-        <article class="surface-card about-side hover-lift">
-          <h3>Snapshot</h3>
-          <div class="about-stats">
-            <div *ngFor="let stat of content.about.stats" class="about-stat">
-              <div class="about-stat-head">
-                <span>{{ stat.label }}</span>
-                <strong>{{ stat.value }}</strong>
-              </div>
-              <div class="bar">
-                <span></span>
+        <article class="about-card about-card--intro" role="listitem">
+          <p class="about-card-label">INTRO</p>
+          <p class="about-card-lead">
+            I build scalable products, AI-powered systems, and automations that feel effortless to use.
+          </p>
+          <p class="about-card-body">
+            I like shipping modern web experiences end-to-end: clean architecture, high performance, and thoughtful UI. When it makes sense, I bring LLMs into the workflow to unlock smarter interfaces and faster operations.
+          </p>
+          <div class="about-meta">
+            <span class="about-meta-item">
+              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+              Trece Martires, PH
+            </span>
+            <span class="about-meta-item">
+              <i class="fa-solid fa-bolt" aria-hidden="true"></i>
+              Building for impact
+            </span>
+          </div>
+        </article>
+
+        <article class="about-card about-card--mindset" role="listitem">
+          <p class="about-card-label">MINDSET</p>
+          <h3 class="about-card-title">Engineering is more than code.</h3>
+          <p class="about-card-body">
+            I care about discipline, consistency, and growth — the habits that compound into real craft. For me, the job is to remove friction, clarify complexity, and build products that people genuinely trust.
+          </p>
+          <div class="about-mini">
+            <span class="about-mini-tag">Consistency</span>
+            <span class="about-mini-tag">Curiosity</span>
+            <span class="about-mini-tag">Ownership</span>
+          </div>
+        </article>
+
+        <article class="about-card about-card--lifestyle" role="listitem">
+          <p class="about-card-label">LIFESTYLE</p>
+          <h3 class="about-card-title">Balance fuels better work.</h3>
+          <p class="about-card-body">
+            Training keeps my mind sharp and my standards high. The same rhythm that builds endurance also builds great software.
+          </p>
+          <div
+            class="about-coverflow"
+            aria-label="Lifestyle carousel"
+            (pointerdown)="onLifestylePointerDown($event)"
+            (pointermove)="onLifestylePointerMove($event)"
+            (pointerup)="onLifestylePointerUp()"
+            (pointercancel)="onLifestylePointerUp()"
+            (pointerleave)="onLifestylePointerUp()"
+            (mouseenter)="pauseLifestyleAuto()"
+            (mouseleave)="resumeLifestyleAuto()"
+          >
+            <div class="about-coverflow-bg" aria-hidden="true"></div>
+            <ng-container *ngFor="let card of lifestyleCards; let i = index">
+              <button
+                type="button"
+                class="about-coverflow-card"
+                [class.is-active]="i === activeLifestyleIndex"
+                [style.--d]="i - activeLifestyleIndex"
+                (click)="setLifestyleActive(i)"
+                [attr.aria-label]="card.label"
+              >
+                <img [src]="card.src" [alt]="card.label" loading="lazy" />
+                <span class="about-coverflow-label">{{ card.label }}</span>
+              </button>
+            </ng-container>
+          </div>
+          <div class="about-pill-row" aria-label="Hobbies">
+            <span class="about-pill"><i class="fa-solid fa-hand-fist" aria-hidden="true"></i> Boxing</span>
+            <span class="about-pill"><i class="fa-solid fa-person-running" aria-hidden="true"></i> Running</span>
+            <span class="about-pill"><i class="fa-solid fa-person-walking" aria-hidden="true"></i> Walking</span>
+            <span class="about-pill"><i class="fa-solid fa-book" aria-hidden="true"></i> Reading</span>
+            <span class="about-pill"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i> Fitness</span>
+            <span class="about-pill"><i class="fa-solid fa-brain" aria-hidden="true"></i> AI &amp; startups</span>
+          </div>
+        </article>
+
+        <article class="about-card about-card--craft" role="listitem">
+          <p class="about-card-label">CRAFT + COLLAB</p>
+          <h3 class="about-card-title">Build. Learn. Ship.</h3>
+          <p class="about-card-body">
+            From landing pages to platforms — I ship scalable apps, websites, and automations, with AI systems when they add real leverage.
+          </p>
+
+          <div class="tech-marquee" aria-label="Tech stack marquee">
+            <div class="tech-marquee__fade" aria-hidden="true"></div>
+            <div class="tech-marquee__viewport">
+              <div class="tech-marquee__track">
+                <div class="tech-marquee__group">
+                  <span class="tech-item tech-item--git"><i class="fa-brands fa-git-alt" aria-hidden="true"></i><span>Git</span></span>
+                  <span class="tech-item tech-item--react"><i class="fa-brands fa-react" aria-hidden="true"></i><span>React</span></span>
+                  <span class="tech-item tech-item--next" aria-label="Next.js"><span class="tech-badge tech-badge--next">N</span><span>Next.js</span></span>
+                  <span class="tech-item tech-item--ts"><span class="tech-badge tech-badge--ts">TS</span><span>TypeScript</span></span>
+                  <span class="tech-item tech-item--flutter"><i class="fa-brands fa-flutter" aria-hidden="true"></i><span>Flutter</span></span>
+                </div>
+                <div class="tech-marquee__group" aria-hidden="true">
+                  <span class="tech-item tech-item--git"><i class="fa-brands fa-git-alt" aria-hidden="true"></i><span>Git</span></span>
+                  <span class="tech-item tech-item--react"><i class="fa-brands fa-react" aria-hidden="true"></i><span>React</span></span>
+                  <span class="tech-item tech-item--next"><span class="tech-badge tech-badge--next">N</span><span>Next.js</span></span>
+                  <span class="tech-item tech-item--ts"><span class="tech-badge tech-badge--ts">TS</span><span>TypeScript</span></span>
+                  <span class="tech-item tech-item--flutter"><i class="fa-brands fa-flutter" aria-hidden="true"></i><span>Flutter</span></span>
+                </div>
               </div>
             </div>
           </div>
-          <ul class="checklist">
-            <li *ngFor="let item of content.about.highlights">{{ item }}</li>
-          </ul>
+
+          <div class="about-collab">
+            <h3 class="about-card-title">Open to collaboration.</h3>
+            <p class="about-card-body">
+              Freelance, startup builds, and innovative projects — especially where product + engineering meets AI.
+            </p>
+            <div class="about-status" aria-label="Availability status">
+              <span class="about-status-dot" aria-hidden="true"></span>
+              <span class="about-status-text">Open to collaboration</span>
+            </div>
+            <a class="about-cta" href="#portfolio" (click)="scrollToPortfolio($event)">Let’s build something <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+          </div>
         </article>
+
+        <figure class="about-card about-card--portrait" role="listitem">
+          <p class="about-card-label">PORTRAIT</p>
+          <div class="about-portrait-frame" aria-label="Portrait gallery">
+            <div class="about-portrait-flip">
+              <img class="about-portrait about-portrait--front" src="assets/images/jatsen-profile.png" alt="Jatsen portrait" loading="lazy" />
+              <img class="about-portrait about-portrait--back" src="assets/images/jatsen-profile-original.png" alt="Jatsen portrait alternate" loading="lazy" />
+            </div>
+          </div>
+        </figure>
+
+        <!-- collab merged into craft card -->
       </div>
     </div>
   </section>
 
-  <section id="services" class="section alt reveal">
-    <div class="container">
-      <p class="section-kicker">My Services</p>
-      <h2>Services I Offer</h2>
-      <div class="card-grid">
-        <article *ngFor="let service of content.services; let i = index" class="surface-card hover-lift service-card">
-          <div class="service-icon">
-            <i [class]="serviceIcons[i % serviceIcons.length]" aria-hidden="true"></i>
+  <section id="skills" class="section alt reveal">
+    <div class="container skills-wrap">
+      <p class="skills-eyebrow">TECH STACK</p>
+      <h2 class="skills-title">My <span>Skills</span></h2>
+
+      <div
+        class="globe"
+        role="application"
+        aria-label="Rotatable skills globe"
+        [style.--globe-rot]="globeRotationCss"
+        (pointerdown)="onGlobePointerDown($event)"
+        (pointermove)="onGlobePointerMove($event)"
+        (pointerup)="onGlobePointerUp()"
+        (pointercancel)="onGlobePointerUp()"
+        (pointerleave)="onGlobePointerUp()"
+      >
+        <canvas #globeCanvas class="globe-canvas" aria-hidden="true"></canvas>
+
+        <ng-container *ngFor="let item of globeItems; trackBy: trackBySkillId">
+          <div
+            class="globe-item"
+            [class.front]="item.isFront"
+            [ngStyle]="item.style"
+            [attr.data-skill]="item.id"
+            [attr.aria-label]="item.label"
+            (pointerenter)="onGlobeItemEnter(item)"
+            (pointerleave)="onGlobeItemLeave(item)"
+            (click)="onGlobeItemClick(item)"
+          >
+            <i [class]="item.iconClass" aria-hidden="true"></i>
+            <span *ngIf="item.isFront && hoveredSkillId === item.id" class="skill-pill" [ngStyle]="item.pillStyle">
+              {{ item.label }}
+            </span>
           </div>
-          <h3>{{ service.title }}</h3>
-          <p>{{ service.description }}</p>
-        </article>
+        </ng-container>
+
       </div>
     </div>
   </section>
 
   <section id="resume" class="section reveal">
-    <div class="container">
-      <p class="section-kicker">My Resume</p>
-      <h2>Professional Experience</h2>
-      <div class="stacked timeline">
-        <article *ngFor="let exp of content.experiences" class="surface-card hover-lift">
-          <div class="row-head">
-            <h3>{{ exp.role }} - {{ exp.company }}</h3>
-            <span>{{ exp.period }}</span>
+    <div class="container resume">
+      <p class="resume-eyebrow">THE EXPERIENCE</p>
+      <h2 class="resume-title">
+        Experience That
+        <span>Brings Ideas to Life</span>
+      </h2>
+
+      <div class="resume-timeline" #resumeTimeline>
+        <div class="resume-track" aria-hidden="true">
+          <div class="resume-track-fill" #timelineFill></div>
+          <div class="resume-track-avatar" aria-hidden="true">
+            <img src="assets/images/jatsen-profile.png" alt="" />
           </div>
-          <p class="muted">{{ exp.location }}</p>
-          <ul>
-            <li *ngFor="let bullet of exp.bullets">{{ bullet }}</li>
-          </ul>
+        </div>
+
+        <article *ngFor="let exp of content.experiences; let i = index" class="resume-item">
+          <div class="resume-left">
+            <p class="resume-period">{{ exp.period }}</p>
+            <p class="resume-company">{{ exp.company }}</p>
+            <p class="resume-meta">
+              <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+              {{ exp.location }}
+            </p>
+            <p class="resume-meta">
+              <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+              {{ exp.type }}
+            </p>
+          </div>
+
+          <div class="resume-mid" aria-hidden="true">
+            <span class="resume-dot" [class.active]="timelineFillPct >= getDotThreshold(i)"></span>
+          </div>
+
+          <div class="resume-right">
+            <h3 class="resume-role">{{ exp.role }}</h3>
+            <ul class="resume-bullets">
+              <li *ngFor="let bullet of exp.bullets">{{ bullet }}</li>
+            </ul>
+            <div class="resume-tags">
+              <span *ngFor="let tag of exp.tags" class="resume-tag">{{ tag }}</span>
+            </div>
+          </div>
         </article>
       </div>
 
       <h2 class="mt-lg">Education</h2>
-      <div class="stacked">
-        <article *ngFor="let edu of content.education" class="surface-card hover-lift">
-          <div class="row-head">
-            <h3>{{ edu.degree }}</h3>
-            <span>{{ edu.period }}</span>
+      <div class="edu-grid">
+        <article *ngFor="let edu of content.education" class="surface-card edu-card hover-lift">
+          <div class="edu-icon-col">
+            <div class="edu-icon">
+              <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+            </div>
+            <span class="edu-period-badge">{{ edu.period }}</span>
           </div>
-          <p>{{ edu.school }}</p>
-          <ul>
-            <li *ngFor="let detail of edu.details">{{ detail }}</li>
-          </ul>
-        </article>
-      </div>
 
-      <h2 class="mt-lg">Skills</h2>
-      <div class="card-grid">
-        <article *ngFor="let skill of content.skillCategories" class="surface-card hover-lift">
-          <h3>{{ skill.category }}</h3>
-          <ul>
-            <li *ngFor="let item of skill.items">{{ item }}</li>
-          </ul>
+          <div class="edu-body">
+            <p class="edu-label">BACHELOR'S DEGREE</p>
+            <h3 class="edu-degree">{{ edu.degree }}</h3>
+            <p class="resume-meta edu-school-meta">
+              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+              {{ edu.school }}
+            </p>
+            <div class="edu-coursework">
+              <ng-container *ngFor="let detail of edu.details">
+                <span *ngFor="let course of detail.split(': ')[1]?.split(', ') ?? []" class="resume-tag">{{ course }}</span>
+              </ng-container>
+            </div>
+          </div>
         </article>
       </div>
     </div>
@@ -186,32 +380,9 @@
     </div>
   </section>
 
-  <section id="contact" class="section reveal">
-    <div class="container">
-      <p class="section-kicker">Contact</p>
-      <h2>Let's Work Together</h2>
-      <div class="surface-card contact-grid hover-lift">
-        <a class="contact-item" [href]="'tel:' + content.contact.phone.replaceAll(' ', '')">
-          <i class="fa-solid fa-phone"></i>
-          <span>{{ content.contact.phone }}</span>
-        </a>
-        <a class="contact-item" [href]="'mailto:' + content.contact.email">
-          <i class="fa-solid fa-envelope"></i>
-          <span>{{ content.contact.email }}</span>
-        </a>
-        <a class="contact-item" [href]="'https://' + content.contact.linkedin" target="_blank" rel="noreferrer">
-          <i class="fa-brands fa-linkedin-in"></i>
-          <span>{{ content.contact.linkedin }}</span>
-        </a>
-        <div class="contact-item">
-          <i class="fa-solid fa-location-dot"></i>
-          <span>{{ content.contact.location }}</span>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <button *ngIf="showBackToTop" class="to-top" type="button" (click)="scrollTop()" aria-label="Back to top">
     ↑
   </button>
+
 </main>

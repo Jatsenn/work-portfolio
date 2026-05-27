@@ -1,20 +1,40 @@
 body {
-  font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
   color: var(--color-text);
-  background: var(--color-page);
-  line-height: 1.75;
-  letter-spacing: 0.005em;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  background-color: var(--color-page);
+  background-image:
+    var(--grid-line-h),
+    var(--grid-line-v);
+  background-size: var(--grid-size);
+  line-height: 1.72;
+  letter-spacing: 0.008em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: var(--vignette-top), var(--vignette-bottom);
 }
 
 p,
 li {
-  font-size: 1.04rem;
+  font-size: 1.02rem;
+  font-weight: 400;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: 'Sora', 'Manrope', sans-serif;
+  font-family: 'Sora', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }

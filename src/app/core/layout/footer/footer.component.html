@@ -1,12 +1,105 @@
-<footer class="site-footer">
-  <div class="container footer-wrap">
-    <div class="footer-logo">Connect</div>
-    <nav class="socials" aria-label="Social links">
+<footer
+  class="site-footer"
+  (mousemove)="onMouseMove($event)"
+  (mouseleave)="onMouseLeave()"
+  (touchstart)="onTouchStart()"
+  [class.is-interactive]="interactive"
+  [style.--orb-mx]="orbMx"
+  [style.--orb-my]="orbMy"
+  [style.--orb-dx]="orbDx"
+  [style.--orb-dy]="orbDy"
+  [style.--orb-rx]="orbRx"
+  [style.--orb-ry]="orbRy"
+  [style.--orb-s]="orbScale"
+>
+  <div class="container footer-hero">
+    <div class="footer-hero__left">
+      <h2 class="footer-headline">
+        <span>Let’s create</span>
+        <span class="muted">something real.</span>
+      </h2>
+      <p class="footer-sub">
+        {{ content.role }} — based in {{ content.contact.location }}. Let’s build something fast, clean, and reliable.
+      </p>
+    </div>
+    <div class="footer-orb-wrap" aria-hidden="true">
+      <div
+        class="footer-orb"
+        [class.popping]="orbPopping"
+        (click)="onOrbClick()"
+      >
+        <i class="fa-solid fa-xmark bubble-icon"></i>
+        <div class="bubble-ring">
+          <span
+            *ngFor="let c of orbChars"
+            class="bubble-char"
+            [style.transform]="'rotate(' + c.angle + 'deg) translateY(-52px)'"
+          >{{ c.char }}</span>
+        </div>
+      </div>
+      <div
+        *ngFor="let b of bubbles"
+        class="bubble"
+        [class.popping]="b.popping"
+        [style.left.%]="b.x"
+        [style.top.%]="b.y"
+        [style.width.px]="b.size"
+        [style.height.px]="b.size"
+        (click)="onBubbleClick(b)"
+      ></div>
+    </div>
+  </div>
+
+  <div class="container footer-card">
+    <div class="footer-card__brand">
+      <div class="footer-mark">{{ content.fullName.split(' ')[0] }}</div>
+      <p class="footer-blurb">
+        Building digital experiences that ship. Focused on performance, polish, and maintainable systems.
+      </p>
+      <div class="footer-contact">
+        <a class="footer-contact__item" [href]="'mailto:' + content.contact.email">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          <span>{{ content.contact.email }}</span>
+        </a>
+        <a class="footer-contact__item" [href]="'tel:' + content.contact.phone.replaceAll(' ', '')">
+          <i class="fa-solid fa-phone" aria-hidden="true"></i>
+          <span>{{ content.contact.phone }}</span>
+        </a>
+        <a class="footer-contact__item" [href]="'https://' + content.contact.linkedin" target="_blank" rel="noreferrer">
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+          <span>{{ content.contact.linkedin }}</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-cols" aria-label="Footer links">
+      <div class="footer-col">
+        <p class="footer-col__title">General</p>
+        <a *ngFor="let link of navLinks" class="footer-link" [href]="link.href">{{ link.label }}</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__title">Work</p>
+        <a class="footer-link" href="#portfolio">Selected projects</a>
+        <a class="footer-link" href="#resume">Experience</a>
+        <a class="footer-link" href="#skills">Skills</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col__title">Contact</p>
+        <a class="footer-link" href="#contact">Start a project</a>
+        <a class="footer-link" [href]="'mailto:' + content.contact.email">Email me</a>
+        <a class="footer-link" [href]="'https://' + content.contact.linkedin" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p class="footer-copy">© {{ year }} {{ content.fullName }}. All rights reserved.</p>
+    <nav class="footer-socials" aria-label="Social links">
       <a
         *ngFor="let social of socials"
         [href]="social.href"
-        target="_blank"
-        rel="noopener noreferrer"
+        [target]="social.href.startsWith('#') || social.href.startsWith('mailto:') || social.href.startsWith('tel:') ? null : '_blank'"
+        rel="noreferrer"
         [attr.aria-label]="social.label"
         [title]="social.label"
       >

@@ -1,21 +1,59 @@
 :root {
-  --color-bg: #f3ece4;
-  --color-surface: #ffffff;
-  --color-surface-alt: #fff7ef;
-  --color-text: #141414;
-  --color-muted: #5f5f5f;
-  --color-accent: #ff6a00;
-  --color-border: #f0d9c5;
+  --color-bg: #fafafa;
+  --color-surface: rgba(255, 255, 255, 0.82);
+  --color-surface-alt: #fafafa;
+  --color-text: #0a0a0f;
+  --color-muted: #52525b;
+  --color-accent: #0a0a0f;
+  --color-on-accent: #ffffff;
+  --color-border: rgba(10, 10, 15, 0.1);
   --color-page: #fafafa;
+
+  --glow-violet: #7c6fff;
+  --glow-coral: #ff6b6b;
+  --glow-cyan: #22d3ee;
+
+  --grad-heading: linear-gradient(135deg, #0a0a0f 0%, #3d3d5c 50%, #0a0a0f 100%);
+  --grad-spark: linear-gradient(135deg, var(--glow-violet), var(--glow-coral));
+
+  --grid-line-h: linear-gradient(rgba(10, 10, 80, 0.055) 1px, transparent 1px);
+  --grid-line-v: linear-gradient(90deg, rgba(10, 10, 80, 0.055) 1px, transparent 1px);
+  --grid-size: 48px 48px;
+
+  --vignette-top: radial-gradient(ellipse 80% 40% at 50% 0%, rgba(124, 111, 255, 0.06), transparent 70%);
+  --vignette-bottom: radial-gradient(ellipse 100% 35% at 50% 100%, rgba(250, 250, 250, 0.95), transparent 80%);
+
+  --card-bg: rgba(255, 255, 255, 0.78);
+  --card-blur: 12px;
+  --card-border: rgba(10, 10, 80, 0.1);
+  --scan-inner: rgba(124, 111, 255, 0.1);
+  --scan-outer: rgba(124, 111, 255, 0.04);
 }
 
 [data-theme='dark'] {
-  --color-bg: #1e1a17;
-  --color-surface: #25211e;
-  --color-surface-alt: #2d2723;
-  --color-text: #f4f1ee;
-  --color-muted: #b9b2ab;
-  --color-accent: #ff8a34;
-  --color-border: #3b322d;
-  --color-page: #151210;
+  --color-bg: #05050f;
+  --color-surface: rgba(14, 14, 28, 0.85);
+  --color-surface-alt: #05050f;
+  --color-text: #eeeef5;
+  --color-muted: #8888aa;
+  --color-accent: #eeeef5;
+  --color-on-accent: #05050f;
+  --color-border: rgba(124, 111, 255, 0.14);
+  --color-page: #05050f;
+
+  --grad-heading: linear-gradient(135deg, #ffffff 0%, #c4b5fd 45%, #eeeef5 100%);
+  --grad-spark: linear-gradient(135deg, var(--glow-violet), var(--glow-coral));
+
+  --grid-line-h: linear-gradient(rgba(124, 111, 255, 0.07) 1px, transparent 1px);
+  --grid-line-v: linear-gradient(90deg, rgba(124, 111, 255, 0.07) 1px, transparent 1px);
+  --grid-size: 48px 48px;
+
+  --vignette-top: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124, 111, 255, 0.08), transparent 70%);
+  --vignette-bottom: radial-gradient(ellipse 100% 40% at 50% 100%, rgba(5, 5, 15, 0.9), transparent 80%);
+
+  --card-bg: rgba(14, 14, 30, 0.72);
+  --card-blur: 16px;
+  --card-border: rgba(124, 111, 255, 0.18);
+  --scan-inner: rgba(124, 111, 255, 0.22);
+  --scan-outer: rgba(124, 111, 255, 0.09);
 }

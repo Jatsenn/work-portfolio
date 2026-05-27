@@ -1,42 +1,189 @@
+<div
+  class="theme-transition-overlay"
+  [class.active]="isThemeTransitioning"
+  [style.--tx]="transitionX + 'px'"
+  [style.--ty]="transitionY + 'px'"
+></div>
+
 <header class="site-header">
-  <div class="container nav-wrap">
-    <a class="logo" href="#home" (click)="onNavClick($event, 'home')">Jatsen<span>Dev</span></a>
+  <div class="nav-wrap">
 
-    <div class="theme-guide-anchor">
-      <button
-        class="theme-toggle"
-        type="button"
-        (click)="toggleTheme()"
-        [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-      >
-        {{ isDarkMode ? 'Light' : 'Dark' }}
+    <div class="mobile-nav-group">
+      <div class="menu-toggle-pill">
+        <a class="menu-toggle-logo-link" (click)="goHome()" aria-label="Go to home">
+          <img class="menu-toggle-logo" src="favicon.png" alt="logo">
+        </a>
+        <div class="menu-toggle-divider" aria-hidden="true"></div>
+        <button
+          class="menu-toggle-name-btn"
+          type="button"
+          (click)="toggleMenu()"
+          [attr.aria-expanded]="isMenuOpen"
+          aria-label="Toggle navigation"
+        >Jatsen Gesta</button>
+        <button
+          class="menu-toggle"
+          type="button"
+          (click)="toggleTheme($event)"
+          [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <i class="fa-solid" [class.fa-sun]="isDarkMode" [class.fa-moon]="!isDarkMode"></i>
+        </button>
+      </div>
+      <button class="cmd-btn cmd-btn--mobile" type="button" (click)="openPalette()" aria-label="Open command palette">
+        <span class="cmd-btn-glow"></span>
+        ⌘
       </button>
+    </div>
 
-      <div *ngIf="showThemePrompt" class="theme-guide" role="dialog" aria-label="Theme guide">
-        <p>Tip: You can switch between light and dark mode here.</p>
-        <div class="theme-guide-actions">
-          <button type="button" class="theme-choice" (click)="chooseTheme('light')">Light</button>
-          <button type="button" class="theme-choice" (click)="chooseTheme('dark')">Dark</button>
-          <button type="button" class="theme-skip" (click)="dismissThemePrompt()">Got it</button>
+    <nav #navPill class="nav-pill" aria-label="Primary"
+      (mousemove)="onPillMouseMove($event)"
+      (mouseleave)="onPillMouseLeave()"
+    >
+      <a
+        *ngFor="let link of links"
+        class="nav-link"
+        [class.active]="isHomePage && activeLinkId === link.id"
+        [href]="'#' + link.id"
+        (click)="onNavClick($event, link.id)"
+        (mouseenter)="onNavHover(link.id)"
+        (focus)="onNavHover(link.id)"
+        (mouseleave)="onNavHoverEnd()"
+        (blur)="onNavHoverEnd()"
+        #navLinkEl
+      >
+        {{ link.label }}
+      </a>
+
+      <div class="nav-divider" aria-hidden="true"></div>
+
+      <div class="theme-guide-anchor">
+        <button
+          class="nav-theme-toggle"
+          type="button"
+          (click)="toggleTheme($event)"
+          [attr.aria-label]="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
+          <i class="fa-solid" [class.fa-sun]="isDarkMode" [class.fa-moon]="!isDarkMode" aria-hidden="true"></i>
+        </button>
+        <div *ngIf="showThemePrompt" class="theme-guide" role="dialog" aria-label="Theme guide">
+          <p>Tip: You can switch between light and dark mode here.</p>
+          <div class="theme-guide-actions">
+            <button type="button" class="theme-choice" (click)="chooseTheme('light')">Light</button>
+            <button type="button" class="theme-choice" (click)="chooseTheme('dark')">Dark</button>
+            <button type="button" class="theme-skip" (click)="dismissThemePrompt()">Got it</button>
+          </div>
         </div>
+      </div>
+
+      <a class="btn-call" [class.active]="isBookCallPage" routerLink="/book-call">
+        <span class="btn-call-glow"></span>
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        <span>Book a Call</span>
+      </a>
+    </nav>
+
+    <button class="cmd-btn" type="button" (click)="openPalette()" aria-label="Open command palette">
+      <span class="cmd-btn-glow"></span>
+      ⌘
+    </button>
+
+    <!-- Mobile drawer -->
+    <div class="mobile-drawer" [class.open]="isMenuOpen" (click)="closeMenu()">
+      <div class="mobile-drawer__panel" (click)="$event.stopPropagation()">
+
+        <div class="mobile-drawer__header">
+          <div class="mobile-drawer__user">
+            <img class="mobile-drawer__avatar" src="favicon.png" alt="logo">
+            <button class="mobile-drawer__name-btn" type="button" (click)="closeMenu()">Jatsen Gesta</button>
+          </div>
+          <button class="mobile-drawer__theme" type="button" (click)="toggleTheme($event)">
+            <i class="fa-solid" [class.fa-sun]="isDarkMode" [class.fa-moon]="!isDarkMode"></i>
+          </button>
+        </div>
+
+        <nav class="mobile-drawer__nav">
+          <a *ngFor="let link of links"
+            class="mobile-drawer__link"
+            [class.active]="isHomePage && activeLinkId === link.id"
+            [href]="'#' + link.id"
+            (click)="onNavClick($event, link.id)">
+            <i class="fa-solid mobile-drawer__icon"
+              [class.fa-house]="link.id === 'home'"
+              [class.fa-user]="link.id === 'about'"
+              [class.fa-briefcase]="link.id === 'skills'"
+              [class.fa-file-lines]="link.id === 'resume'"
+              [class.fa-layer-group]="link.id === 'portfolio'"
+            ></i>
+            {{ link.label }}
+          </a>
+        </nav>
+
+        <div class="mobile-drawer__divider"></div>
+
+        <a class="mobile-drawer__link" [class.active]="isBookCallPage" routerLink="/book-call" (click)="closeMenu()">
+          <i class="fa-solid fa-phone mobile-drawer__icon"></i>
+          Book a Call
+        </a>
+
+        <button class="mobile-drawer__link mobile-drawer__cmd" type="button" (click)="closeMenu(); openPalette()">
+          <span class="mobile-drawer__icon mobile-drawer__cmd-icon">⌘</span>
+          Command Menu
+        </button>
+
       </div>
     </div>
 
-    <button
-      class="menu-toggle"
-      type="button"
-      (click)="toggleMenu()"
-      [attr.aria-expanded]="isMenuOpen"
-      aria-label="Toggle navigation"
-    >
-      {{ isMenuOpen ? 'Close' : 'Menu' }}
-    </button>
-
-    <nav aria-label="Primary" [class.open]="isMenuOpen">
-      <a *ngFor="let link of links" [href]="'#' + link.id" (click)="onNavClick($event, link.id)">{{ link.label }}</a>
-      <a class="btn-contact mobile" href="#contact" (click)="onNavClick($event, 'contact')">Contact Me</a>
-    </nav>
-
-    <a class="btn-contact desktop" href="#contact" (click)="onNavClick($event, 'contact')">Contact Me</a>
   </div>
 </header>
+
+<!-- Command Palette -->
+<div class="cmd-backdrop" [class.open]="isPaletteOpen" (click)="closePalette()" aria-hidden="true"></div>
+<div
+  class="cmd-palette"
+  [class.open]="isPaletteOpen"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Command palette"
+>
+  <div class="cmd-search">
+    <i class="fa-solid fa-magnifying-glass cmd-search-icon" aria-hidden="true"></i>
+    <input
+      #cmdInput
+      class="cmd-input"
+      type="text"
+      placeholder="Type a command or search..."
+      [(ngModel)]="searchQuery"
+      (keydown)="onPaletteKeydown($event)"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <kbd class="cmd-esc">ESC</kbd>
+  </div>
+
+  <div class="cmd-results" #cmdResults>
+    <ng-container *ngFor="let group of filteredGroups">
+      <p class="cmd-group-label">{{ group.label }}</p>
+      <button
+        *ngFor="let item of group.items; let i = index"
+        type="button"
+        class="cmd-item"
+        [class.active]="item === activeItem"
+        (click)="runItem(item)"
+        (mouseenter)="activeItem = item"
+      >
+        <span class="cmd-item-icon"><i [class]="item.icon" aria-hidden="true"></i></span>
+        <span class="cmd-item-body">
+          <span class="cmd-item-title">{{ item.title }}</span>
+          <span class="cmd-item-sub">{{ item.sub }}</span>
+        </span>
+        <i class="fa-solid fa-turn-down-left cmd-item-enter" aria-hidden="true"></i>
+      </button>
+    </ng-container>
+  </div>
+
+  <div class="cmd-footer">
+    <span><kbd>↑</kbd><kbd>↓</kbd> Navigate</span>
+    <span><kbd>⌘</kbd><kbd>↵</kbd> Open</span>
+  </div>
+</div>

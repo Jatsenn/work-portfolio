@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fafaff"/>
+      <stop offset="1" stop-color="#f0edff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="68%" cy="32%" r="70%">
+      <stop offset="0" stop-color="#7c6fff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#7c6fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.74"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="18" result="b"/>
+      <feOffset in="b" dx="0" dy="22" result="o"/>
+      <feColorMatrix in="o" type="matrix"
+        values="0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0 0.14  0 0 0 0.18 0" result="s"/>
+      <feMerge>
+        <feMergeNode in="s"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="track" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1f1f2e" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#2b2b44" stop-opacity="0.92"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#glow)"/>
+
+  <g filter="url(#soft)" transform="translate(180 140)">
+    <rect x="0" y="0" width="840" height="520" rx="44" fill="url(#card)"/>
+    <rect x="0" y="0" width="840" height="520" rx="44" fill="none" stroke="#d9d5e9" stroke-opacity="0.7"/>
+
+    <!-- Minimal “track” + runner mark -->
+    <g transform="translate(92 120)">
+      <path d="M40 320c140-190 290-268 428-238 82 18 158 68 230 152 34 40 72 62 114 68 36 6 68 2 96-10"
+            fill="none" stroke="url(#track)" stroke-width="26" stroke-linecap="round" opacity="0.9"/>
+      <path d="M78 334c136-170 276-238 410-212 76 14 146 58 212 134 44 52 94 84 150 96"
+            fill="none" stroke="#7c6fff" stroke-width="10" stroke-linecap="round" opacity="0.25"/>
+
+      <circle cx="520" cy="172" r="18" fill="#1f1f2e" opacity="0.9"/>
+      <path d="M520 192l-36 66c-10 18 4 40 24 40h26l34-60 48 22c18 8 38-4 40-24l2-18-44-18-30-68h-64z"
+            fill="#2b2b44" opacity="0.95"/>
+    </g>
+
+    <g transform="translate(52 412)" font-family="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace">
+      <text x="0" y="0" font-size="22" letter-spacing="6" fill="#6c677a">RUNNING</text>
+      <text x="0" y="34" font-size="16" letter-spacing="2" fill="#8a8696">Endurance • Clarity • Momentum</text>
+    </g>
+  </g>
+</svg>
