@@ -19,7 +19,12 @@
   <div class="blog-body">
     <div class="blog-container">
       <div *ngIf="posts.length; else empty" class="blog-list">
-        <a *ngFor="let post of posts" [routerLink]="['/blog', post.slug]" class="blog-row">
+        <a
+          *ngFor="let post of posts; let i = index"
+          [routerLink]="['/blog', post.slug]"
+          class="blog-row"
+          [style.animation-delay.ms]="i * 60"
+        >
           <div class="blog-row-meta">
             <span class="blog-row-date">{{ post.date }}</span>
             <span *ngIf="post.readTime" class="blog-row-readtime">{{ post.readTime }}</span>

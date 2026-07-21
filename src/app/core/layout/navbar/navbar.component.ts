@@ -29,8 +29,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'home', label: 'Home' },
     { id: 'about', label: 'About' },
     { id: 'skills', label: 'Skills' },
-    { id: 'resume', label: 'Resume' },
-    { id: 'portfolio', label: 'Portfolio' },
+    { id: 'experience', label: 'Experience' },
+    { id: 'work', label: 'Work' },
   ];
 
   readonly moreLinks = [
@@ -60,8 +60,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         { title: 'Home', sub: 'Go to homepage', icon: 'fa-solid fa-house', action: () => this.onNavClick(new MouseEvent('click'), 'home') },
         { title: 'About', sub: 'Learn more about me', icon: 'fa-solid fa-user', action: () => this.onNavClick(new MouseEvent('click'), 'about') },
         { title: 'Skills', sub: 'My tech stack', icon: 'fa-solid fa-briefcase', action: () => this.onNavClick(new MouseEvent('click'), 'skills') },
-        { title: 'Resume', sub: 'My experience', icon: 'fa-solid fa-file-lines', action: () => this.onNavClick(new MouseEvent('click'), 'resume') },
-        { title: 'Portfolio', sub: 'View my work', icon: 'fa-solid fa-layer-group', action: () => this.onNavClick(new MouseEvent('click'), 'portfolio') },
+        { title: 'Experience', sub: 'My experience', icon: 'fa-solid fa-file-lines', action: () => this.onNavClick(new MouseEvent('click'), 'experience') },
+        { title: 'Work', sub: 'View my work', icon: 'fa-solid fa-layer-group', action: () => this.onNavClick(new MouseEvent('click'), 'work') },
         { title: 'Book a Call', sub: 'Schedule a meeting', icon: 'fa-solid fa-phone', action: () => { this.closePalette(); this.router.navigate(['/book-call']); } },
         { title: 'Certificates', sub: 'Courses and credentials', icon: 'fa-solid fa-certificate', action: () => { this.closePalette(); this.router.navigate(['/certificates']); } },
         { title: 'Blog', sub: 'Dev tips and lessons learned', icon: 'fa-solid fa-pen-nib', action: () => { this.closePalette(); this.router.navigate(['/blog']); } },

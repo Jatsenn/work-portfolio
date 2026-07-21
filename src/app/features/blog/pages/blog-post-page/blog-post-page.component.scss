@@ -99,9 +99,45 @@
 
   img {
     width: 100%;
+    height: clamp(220px, 32vw, 340px);
+    object-fit: cover;
     border-radius: 14px;
     display: block;
   }
+}
+
+.post-cover-abstract {
+  position: relative;
+  height: clamp(220px, 32vw, 340px);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background:
+    var(--vignette-top),
+    var(--grid-line-h), var(--grid-line-v),
+    color-mix(in oklab, var(--color-surface), transparent 10%);
+  background-size: auto, var(--grid-size), var(--grid-size), auto;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px 20px;
+}
+
+.post-cover-abstract::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(480px circle at 20% 30%, color-mix(in oklab, var(--glow-violet), transparent 78%), transparent 60%),
+    radial-gradient(420px circle at 85% 80%, color-mix(in oklab, var(--glow-coral), transparent 82%), transparent 60%);
+}
+
+.post-cover-tag {
+  position: relative;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
 /* Body */
@@ -135,6 +171,23 @@
   color: var(--color-text);
   margin: 0;
   white-space: pre-line;
+}
+
+.post-section--lede .post-section-body {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--color-text), transparent 4%);
+}
+
+.post-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.88em;
+  background: color-mix(in oklab, var(--color-surface), transparent 4%);
+  border: 1px solid var(--color-border);
+  border-radius: 5px;
+  padding: 2px 6px;
+  color: var(--glow-violet);
 }
 
 /* Next post */

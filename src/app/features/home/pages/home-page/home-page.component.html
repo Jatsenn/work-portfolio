@@ -164,7 +164,10 @@
                 (click)="openLightbox(i)"
                 [attr.aria-label]="'View ' + card.label + ' photo'"
               >
-                <img [src]="card.src" [alt]="card.label" loading="lazy" />
+                <img [src]="card.poster || card.src" [alt]="card.label" loading="lazy" />
+                <span class="reel-card-play" *ngIf="card.type === 'video'" aria-hidden="true">
+                  <i class="fa-solid fa-play"></i>
+                </span>
                 <span class="reel-card-label">{{ card.label }}</span>
               </button>
             </div>
@@ -219,7 +222,7 @@
               <span class="about-status-dot" aria-hidden="true"></span>
               <span class="about-status-text">Open to collaboration</span>
             </div>
-            <a class="about-cta" href="#portfolio" (click)="scrollToPortfolio($event)">Let’s build something <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+            <a class="about-cta" href="#work" (click)="scrollToWork($event)">Let’s build something <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
           </div>
         </article>
 
@@ -278,13 +281,22 @@
     </div>
   </section>
 
-  <section id="resume" class="section reveal">
+  <section id="experience" class="section reveal">
     <div class="container resume">
       <p class="resume-eyebrow">THE EXPERIENCE</p>
       <h2 class="resume-title">
         Experience That
         <span>Brings Ideas to Life</span>
       </h2>
+
+      <a
+        class="resume-download"
+        href="assets/Gesta-Jatsen-Resume-2026.pdf"
+        download="Jatsen-Gesta-Resume.pdf"
+      >
+        <i class="fa-solid fa-download" aria-hidden="true"></i>
+        Download Resume
+      </a>
 
       <div class="resume-timeline" #resumeTimeline>
         <div class="resume-track" aria-hidden="true">
@@ -330,7 +342,7 @@
     </div>
   </section>
 
-  <section id="portfolio" class="section alt reveal">
+  <section id="work" class="section alt reveal">
     <div class="container">
       <h2 class="curated-title">Curated <em>Work</em></h2>
 
@@ -406,7 +418,17 @@
       <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
     </button>
     <div class="lightbox-frame" (click)="$event.stopPropagation()">
-      <img [src]="photo.src" [alt]="photo.label" />
+      <video
+        *ngIf="photo.type === 'video'; else lightboxImage"
+        [src]="photo.src"
+        [poster]="photo.poster"
+        controls
+        playsinline
+        preload="metadata"
+      ></video>
+      <ng-template #lightboxImage>
+        <img [src]="photo.src" [alt]="photo.label" />
+      </ng-template>
       <p class="lightbox-caption">{{ photo.label }}</p>
     </div>
     <button class="lightbox-nav lightbox-nav--next" type="button" (click)="nextLightbox($event)" aria-label="Next photo">

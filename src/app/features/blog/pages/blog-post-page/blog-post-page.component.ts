@@ -30,6 +30,11 @@ export class BlogPostPageComponent implements OnInit, OnDestroy {
     this.router.navigate(['/blog']);
   }
 
+  /** Splits a section body on backtick pairs so `inline code` renders in a monospace chip. */
+  parseInline(text: string): Array<{ code: boolean; value: string }> {
+    return text.split('`').map((value, i) => ({ code: i % 2 === 1, value }));
+  }
+
   ngOnInit(): void {
     this.sub = this.route.paramMap.subscribe(params => {
       const slug = params.get('slug');

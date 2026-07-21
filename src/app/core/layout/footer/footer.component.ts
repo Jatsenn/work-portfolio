@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { PortfolioContent } from '../../../shared/models/portfolio.model';
 
 interface Bubble {
@@ -13,7 +14,7 @@ interface Bubble {
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
 })
@@ -47,9 +48,8 @@ export class FooterComponent implements OnDestroy {
     { label: 'Home', href: '#home' },
     { label: 'About', href: '#about' },
     { label: 'Skills', href: '#skills' },
-    { label: 'Resume', href: '#resume' },
-    { label: 'Portfolio', href: '#portfolio' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Experience', href: '#experience' },
+    { label: 'Work', href: '#work' },
   ];
 
   get socials(): Array<{ label: string; icon: string; href: string }> {

@@ -110,12 +110,14 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   heroImageSrc = this.heroImageCandidates[0];
   heroImageMissing = false;
 
-  readonly lifestyleCards = [
+  readonly lifestyleCards: Array<{ src: string; label: string; type?: 'video'; poster?: string }> = [
     { src: 'assets/images/about/running.jpeg', label: 'Running' },
-    { src: 'assets/images/about/boxing.svg', label: 'Boxing' },
-    { src: 'assets/images/about/walking.jpeg', label: 'Walking' },
+    { src: 'assets/images/about/boxing.mp4', label: 'Boxing', type: 'video', poster: 'assets/images/about/boxing-poster.jpg' },
+    { src: 'assets/images/about/walking.mp4', label: 'Walking', type: 'video', poster: 'assets/images/about/walking-poster.jpg' },
     { src: 'assets/images/about/reading.jpeg', label: 'Reading' },
     { src: 'assets/images/about/fitness.jpeg', label: 'Fitness' },
+    { src: 'assets/images/about/basketball.mp4', label: 'Basketball', type: 'video', poster: 'assets/images/about/basketball-poster.jpg' },
+    { src: 'assets/images/about/badminton.mp4', label: 'Badminton', type: 'video', poster: 'assets/images/about/badminton-poster.jpg' },
   ];
 
   lightboxIndex: number | null = null;
@@ -295,17 +297,17 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  scrollToPortfolio(event: Event): void {
+  scrollToWork(event: Event): void {
     event.preventDefault();
-    const section = document.getElementById('portfolio');
+    const section = document.getElementById('work');
     if (!section) return;
     const header = document.querySelector('.site-header') as HTMLElement | null;
     const offset = header ? header.offsetHeight : 0;
     const top = section.getBoundingClientRect().top + window.scrollY - offset;
     window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
     setTimeout(() => {
-      section.classList.add('portfolio-highlight');
-      setTimeout(() => section.classList.remove('portfolio-highlight'), 1200);
+      section.classList.add('work-highlight');
+      setTimeout(() => section.classList.remove('work-highlight'), 1200);
     }, 600);
   }
 

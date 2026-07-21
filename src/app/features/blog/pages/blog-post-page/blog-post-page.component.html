@@ -22,17 +22,29 @@
       </div>
     </div>
 
-    <div *ngIf="post.coverImage" class="post-cover">
+    <div class="post-cover">
       <div class="post-container">
-        <img [src]="post.coverImage" [alt]="post.title" loading="lazy" />
+        <img *ngIf="post.coverImage" [src]="post.coverImage" [alt]="post.title" loading="lazy" />
+        <div *ngIf="!post.coverImage" class="post-cover-abstract" aria-hidden="true">
+          <span class="post-cover-tag" *ngIf="post.tags?.length">{{ post.tags?.[0] }}</span>
+        </div>
       </div>
     </div>
 
     <div class="post-body">
       <div class="post-container post-sections">
-        <section class="post-section" *ngFor="let section of post.sections">
+        <section
+          class="post-section"
+          *ngFor="let section of post.sections; let i = index"
+          [class.post-section--lede]="i === 0"
+        >
           <h2 *ngIf="section.heading" class="post-section-heading">{{ section.heading }}</h2>
-          <p class="post-section-body">{{ section.body }}</p>
+          <p class="post-section-body">
+            <ng-container *ngFor="let seg of parseInline(section.body)">
+              <code *ngIf="seg.code" class="post-code">{{ seg.value }}</code>
+              <ng-container *ngIf="!seg.code">{{ seg.value }}</ng-container>
+            </ng-container>
+          </p>
         </section>
       </div>
     </div>

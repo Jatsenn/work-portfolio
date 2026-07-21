@@ -1186,7 +1186,7 @@ h3 {
 .reel-track {
   --reel-card-w: clamp(150px, 30vw, 190px);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x proximity;
@@ -1240,6 +1240,32 @@ h3 {
   inset: 0;
   pointer-events: none;
   background: linear-gradient(to top, rgba(12, 12, 18, 0.6), transparent 55%);
+}
+
+.reel-card-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.reel-card:hover .reel-card-play,
+.reel-card:focus-visible .reel-card-play {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(255, 255, 255, 0.26);
 }
 
 .reel-card-label {
@@ -1341,7 +1367,8 @@ h3 {
   to { transform: scale(1); opacity: 1; }
 }
 
-.lightbox-frame img {
+.lightbox-frame img,
+.lightbox-frame video {
   display: block;
   width: 100%;
   max-height: 82vh;
@@ -1658,7 +1685,33 @@ h3 {
   font-size: clamp(2.2rem, 4vw, 3.8rem);
   line-height: 1.06;
   letter-spacing: -0.03em;
-  margin: 0 0 72px;
+  margin: 0 0 28px;
+}
+
+.resume-download {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: fit-content;
+  margin: 0 auto 56px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 14px 32px color-mix(in oklab, var(--color-text), transparent 86%);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.resume-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px color-mix(in oklab, var(--color-text), transparent 80%);
+}
+
+.resume-download i {
+  font-size: 0.82rem;
 }
 
 .resume-title span {
@@ -2346,7 +2399,7 @@ h3 {
   100% { box-shadow: inset 0 0 0 2px rgba(124, 111, 255, 0); }
 }
 
-#portfolio.portfolio-highlight h2 {
+#work.work-highlight h2 {
   animation: portfolioTitleFlash 1.2s ease forwards;
 }
 

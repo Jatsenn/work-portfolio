@@ -32,9 +32,9 @@ export class ProjectDetailPageComponent implements OnInit, OnDestroy {
   ) {}
 
   goBack(): void {
-    this.router.navigate(['/'], { fragment: 'portfolio' }).then(() => {
+    this.router.navigate(['/'], { fragment: 'work' }).then(() => {
       setTimeout(() => {
-        document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     });
   }

@@ -1,7 +1,7 @@
 import { PortfolioContent } from '../../../shared/models/portfolio.model';
 
 export const HOME_CONTENT: PortfolioContent = {
-  fullName: 'Engr. Jatsen P. Gesta',
+  fullName: 'Jatsen P. Gesta',
   role: 'Software Engineer',
   contact: {
     phone: '+63 962 192 6650',
@@ -223,6 +223,7 @@ export const HOME_CONTENT: PortfolioContent = {
       date: 'Jul 2026',
       readTime: '5 min read',
       tags: ['Claude Code', 'AI Tools', 'Productivity'],
+      coverImage: 'assets/images/claude-code-blog-post.png',
       sections: [
         {
           heading: 'Why I Started Using It',
@@ -230,7 +231,7 @@ export const HOME_CONTENT: PortfolioContent = {
         },
         {
           heading: 'Getting Set Up',
-          body: "Install it with npm: npm install -g @anthropic-ai/claude-code. Then cd into a project and run claude — it opens an interactive session right in your terminal, scoped to that repo. Sign in once with your Anthropic account and you're set. No separate IDE plugin required, though editor integrations exist if you want them.",
+          body: "Install it with npm: `npm install -g @anthropic-ai/claude-code`. Then cd into a project and run `claude` — it opens an interactive session right in your terminal, scoped to that repo. Sign in once with your Anthropic account and you're set. No separate IDE plugin required, though editor integrations exist if you want them.",
         },
         {
           heading: 'The One File That Changes Everything: CLAUDE.md',
@@ -242,7 +243,7 @@ export const HOME_CONTENT: PortfolioContent = {
         },
         {
           heading: 'Quick Tips',
-          body: "Be specific in prompts — vague requests get vague results.\nUse plan mode for anything that touches multiple files, so you can review the approach before code gets written.\nNever let it run destructive git commands (force-push, reset --hard) without asking first.\nWhen you don't understand a piece of code, just ask it to explain — that's often more valuable than having it write new code.",
+          body: "Be specific in prompts — vague requests get vague results.\nUse plan mode for anything that touches multiple files, so you can review the approach before code gets written.\nNever let it run destructive git commands (`force-push`, `reset --hard`) without asking first.\nWhen you don't understand a piece of code, just ask it to explain — that's often more valuable than having it write new code.",
         },
       ],
     },
@@ -253,6 +254,7 @@ export const HOME_CONTENT: PortfolioContent = {
       date: 'Jun 2026',
       readTime: '4 min read',
       tags: ['Docker', 'DevOps'],
+      coverImage: 'assets/images/docker-blog-post.png',
       sections: [
         {
           heading: 'The Problem It Solved For Me',
@@ -260,15 +262,15 @@ export const HOME_CONTENT: PortfolioContent = {
         },
         {
           heading: 'Docker Compose Is the Real Win',
-          body: "A single docker-compose.yml can spin up your app, database, and any supporting services together with one command: docker compose up. No more juggling five terminal tabs remembering which service needs to start first — Compose handles the dependency order for you.",
+          body: "A single `docker-compose.yml` can spin up your app, database, and any supporting services together with one command: `docker compose up`. No more juggling five terminal tabs remembering which service needs to start first — Compose handles the dependency order for you.",
         },
         {
           heading: 'Habits That Keep It Clean',
-          body: "Add a .dockerignore file so you're not copying node_modules or .git into your build context. Use multi-stage builds to keep production images small — build in one stage, copy only the compiled output into a slim final image. And run docker system prune every so often, or old images and volumes will quietly eat your disk.",
+          body: "Add a `.dockerignore` file so you're not copying node_modules or .git into your build context. Use multi-stage builds to keep production images small — build in one stage, copy only the compiled output into a slim final image. And run `docker system prune` every so often, or old images and volumes will quietly eat your disk.",
         },
         {
           heading: 'Quick Commands I Use Daily',
-          body: "docker compose up -d — start everything in the background.\ndocker compose logs -f <service> — tail logs for one service.\ndocker exec -it <container> sh — jump into a running container to debug.\ndocker compose down -v — tear everything down and reset volumes when state gets weird.",
+          body: "`docker compose up -d` — start everything in the background.\n`docker compose logs -f <service>` — tail logs for one service.\n`docker exec -it <container> sh` — jump into a running container to debug.\n`docker compose down -v` — tear everything down and reset volumes when state gets weird.",
         },
       ],
     },
@@ -279,10 +281,11 @@ export const HOME_CONTENT: PortfolioContent = {
       date: 'Jun 2026',
       readTime: '4 min read',
       tags: ['Git', 'Best Practices'],
+      coverImage: 'assets/images/git-blog-post.png',
       sections: [
         {
           heading: 'Write Commits for Future You',
-          body: "A commit message should explain why a change was made, not just what changed — the diff already shows what. Use the imperative mood (\"fix null check\" not \"fixed null check\") and keep commits small and atomic: one logical change per commit. Six months later, git log becomes a story you can actually follow instead of a wall of \"wip\" and \"fix stuff.\"",
+          body: "A commit message should explain why a change was made, not just what changed — the diff already shows what. Use the imperative mood (\"fix null check\" not \"fixed null check\") and keep commits small and atomic: one logical change per commit. Six months later, `git log` becomes a story you can actually follow instead of a wall of \"wip\" and \"fix stuff.\"",
         },
         {
           heading: "A Branching Convention That Doesn't Get in the Way",
@@ -290,11 +293,11 @@ export const HOME_CONTENT: PortfolioContent = {
         },
         {
           heading: 'Before You Push',
-          body: "Review your own diff first — git diff --staged catches things a second look on GitHub won't. Squash noisy WIP commits into something coherent before opening a PR; nobody needs to see your 14 attempts to fix a typo. And never force-push a shared branch without warning your team — it rewrites history for everyone pulling from it.",
+          body: "Review your own diff first — `git diff --staged` catches things a second look on GitHub won't. Squash noisy WIP commits into something coherent before opening a PR; nobody needs to see your 14 attempts to fix a typo. And never force-push a shared branch without warning your team — it rewrites history for everyone pulling from it.",
         },
         {
           heading: 'The .gitignore Habit',
-          body: "Set up .gitignore before your first commit, not after you've already leaked node_modules, .env, or build output into history. Once a secret is committed, deleting the file later doesn't remove it from git history — you'd need to rewrite history entirely, which is a much bigger headache than adding three lines to .gitignore up front.",
+          body: "Set up `.gitignore` before your first commit, not after you've already leaked node_modules, `.env`, or build output into history. Once a secret is committed, deleting the file later doesn't remove it from git history — you'd need to rewrite history entirely, which is a much bigger headache than adding three lines to `.gitignore` up front.",
         },
       ],
     },
