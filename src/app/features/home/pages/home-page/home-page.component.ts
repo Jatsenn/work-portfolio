@@ -106,7 +106,6 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
 
   activeCategory = 'All';
   activeAboutTab: string = this.aboutTabs[0].id;
-  showBackToTop = false;
   heroImageSrc = this.heroImageCandidates[0];
   heroImageMissing = false;
 
@@ -311,10 +310,6 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     }, 600);
   }
 
-  scrollTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
   onHeroImageError(): void {
     const currentIndex = this.heroImageCandidates.indexOf(this.heroImageSrc);
     const next = this.heroImageCandidates[currentIndex + 1];
@@ -378,7 +373,6 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
-    this.showBackToTop = window.scrollY > 700;
     this.updateTimelineFill();
     this.updateProjectParallax();
   }

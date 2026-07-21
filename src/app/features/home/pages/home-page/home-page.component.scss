@@ -31,10 +31,12 @@
   transition: background 0.05s linear;
 }
 
-/* Ensure all direct section children stack above the glow */
+/* Ensure all direct section children stack above the glow, and can never
+   bleed their hit-area into a neighboring section (e.g. into the footer). */
 #page > section {
   position: relative;
   z-index: 1;
+  overflow: hidden;
 }
 
 .section.alt {
@@ -2407,54 +2409,6 @@ h3 {
   0%   { color: var(--color-text); }
   30%  { color: var(--glow-violet); text-shadow: 0 0 24px rgba(124, 111, 255, 0.5); }
   100% { color: var(--color-text); text-shadow: none; }
-}
-
-.to-top {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  border: 0;
-  background: var(--color-accent);
-  color: var(--color-on-accent);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-size: 20px;
-  font-weight: 700;
-  cursor: none;
-  box-shadow: 0 8px 24px rgba(124, 111, 255, 0.3), 0 4px 8px rgba(0,0,0,0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.to-top:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 14px 32px rgba(124, 111, 255, 0.4);
-}
-
-.theme-toggle {
-  position: fixed;
-  right: 72px;
-  bottom: 20px;
-  border: 1px solid var(--card-border);
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--color-text);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  font-size: 16px;
-  cursor: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  display: grid;
-  place-items: center;
-}
-
-.theme-toggle:hover {
-  transform: translateY(-3px);
-  border-color: var(--glow-violet);
-  box-shadow: 0 12px 28px rgba(124, 111, 255, 0.25);
 }
 
 @media (max-width: 1023px) {

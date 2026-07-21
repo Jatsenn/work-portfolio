@@ -12,7 +12,10 @@ body {
 
 /* Custom cursor (home page) replaces the native pointer app-wide, since
    navbar/footer are global chrome rendered outside the home page's own
-   component template and its scoped styles can't reach them. */
-* {
-  cursor: none !important;
+   component template and its scoped styles can't reach them. Only on
+   devices with a real mouse — touch devices keep native behavior. */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
 }

@@ -429,4 +429,11 @@
     height: min(70vh, 560px);
     bottom: 64px;
   }
+
+  /* iOS/Android auto-zoom on input focus triggers below 16px — this keeps
+     the layout stable when the on-screen keyboard opens, without disabling
+     pinch-zoom site-wide (which the viewport meta tag would do instead). */
+  .ai-chat__input {
+    font-size: 16px;
+  }
 }

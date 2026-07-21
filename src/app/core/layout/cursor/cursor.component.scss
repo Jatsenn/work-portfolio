@@ -4,8 +4,17 @@
   top: 0;
   left: 0;
   pointer-events: none;
-  z-index: 99999;
+  z-index: 200000;
   will-change: transform;
+}
+
+/* Touch devices (and DevTools device emulation) have no real mouse — hide
+   the custom cursor graphic so it doesn't linger at the last tap position. */
+@media (hover: none), (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none !important;
+  }
 }
 
 .cursor-dot {
