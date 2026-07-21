@@ -5,6 +5,7 @@
 /tmp
 /out-tsc
 /bazel-out
+/hostinger-upload.zip
 
 # Node
 /node_modules
