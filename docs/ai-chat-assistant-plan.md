@@ -22,7 +22,7 @@ sequenceDiagram
     R->>W: Types a question
     W->>F: POST { message, history }
     F->>F: Build system prompt + inject HOME_CONTENT as context
-    F->>G: Call Gemini (gemini-3.5-flash or similar free-tier model)
+    F->>G: Call Gemini (gemini-3.1-flash-lite or similar free-tier model)
     G-->>F: Answer
     F-->>W: { reply }
     W-->>R: Renders answer in chat
@@ -91,7 +91,7 @@ Practical detail: strip/limit what's injected — e.g. no need to send `blogPost
 **Function responsibilities:**
 1. Validate the request body (reject empty/oversized messages — this is the untrusted-input boundary).
 2. Build the full prompt: system prompt + serialized portfolio context + conversation history + new message.
-3. Call Gemini's `generateContent` REST endpoint (model: `gemini-3.5-flash` or similar free-tier model — cheap/free, fast, plenty capable for grounded Q&A over a few KB of data).
+3. Call Gemini's `generateContent` REST endpoint (model: `gemini-3.1-flash-lite` or similar free-tier model — cheap/free, fast, plenty capable for grounded Q&A over a few KB of data).
 4. Return the reply as JSON. Never leak the API key, stack traces, or internal errors to the client on failure — return a generic "something went wrong, try again" message instead.
 
 **Secrets:** `GEMINI_API_KEY` stored in Vercel's Environment Variables (project settings), never committed to the repo, never logged.
