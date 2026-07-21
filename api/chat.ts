@@ -4,6 +4,8 @@ import { HOME_CONTENT } from '../src/app/features/home/data/home-content';
 const GEMINI_MODEL = 'gemini-3.1-flash-lite';
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 const REQUEST_TIMEOUT_MS = 15000;
+const MAX_ATTEMPTS = 2;
+const RETRY_DELAY_MS = 800;
 const MAX_MESSAGE_LENGTH = 500;
 const MAX_HISTORY_TURNS = 10;
 
@@ -155,24 +157,46 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     { role: 'user', parts: [{ text: message.trim() }] },
   ];
 
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const requestBody = JSON.stringify({
+    systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
+    contents,
+    generationConfig: { maxOutputTokens: 512, temperature: 0.4 },
+  });
 
   try {
-    const geminiResponse = await fetch(`${GEMINI_ENDPOINT}?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
-        contents,
-        generationConfig: { maxOutputTokens: 512, temperature: 0.4 },
-      }),
-      signal: controller.signal,
-    });
+    let geminiResponse: Response | undefined;
+    let errorBody = '';
 
-    if (!geminiResponse.ok) {
-      const errorBody = await geminiResponse.text();
-      console.error(`Gemini API error ${geminiResponse.status}: ${errorBody}`);
+    for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+      try {
+        geminiResponse = await fetch(`${GEMINI_ENDPOINT}?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: requestBody,
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeoutId);
+      }
+
+      if (geminiResponse.ok) {
+        break;
+      }
+
+      errorBody = await geminiResponse.text();
+      const isRetryable = geminiResponse.status === 503 && attempt < MAX_ATTEMPTS;
+      if (!isRetryable) {
+        break;
+      }
+
+      console.error(`Gemini API 503 on attempt ${attempt}/${MAX_ATTEMPTS}, retrying in ${RETRY_DELAY_MS}ms`);
+      await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
+    }
+
+    if (!geminiResponse || !geminiResponse.ok) {
+      console.error(`Gemini API error ${geminiResponse?.status}: ${errorBody}`);
       res.status(502).json({ error: 'Assistant is temporarily unavailable.' });
       return;
     }
@@ -188,7 +212,5 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     res.status(200).json({ reply });
   } catch {
     res.status(504).json({ error: "Couldn't reach the assistant — try again in a moment." });
-  } finally {
-    clearTimeout(timeoutId);
   }
 }
