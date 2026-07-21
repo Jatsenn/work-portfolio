@@ -255,7 +255,7 @@ export const HOME_CONTENT: PortfolioContent = {
       sections: [
         {
           heading: 'Why I Started Using It',
-          body: "I'm a software engineer, not an AI engineer — I don't build AI systems, I use them. Claude Code started as a way to speed up boring parts of the job: boilerplate, repetitive refactors, digging through unfamiliar code. It stuck around because it's genuinely useful for that, as long as I keep reviewing everything it touches instead of trusting it blindly.",
+          body: "Claude Code started as a way to speed up boring parts of the job: boilerplate, repetitive refactors, digging through unfamiliar code. It stuck around because it's genuinely useful for that, as long as I keep reviewing everything it touches instead of trusting it blindly.",
         },
         {
           heading: 'Getting Set Up',

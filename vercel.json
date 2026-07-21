@@ -1,0 +1,4 @@
+{
+  "buildCommand": "echo 'API-only deployment — Angular UI is hosted separately on Hostinger'",
+  "outputDirectory": "api-static"
+}

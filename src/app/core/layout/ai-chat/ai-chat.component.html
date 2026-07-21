@@ -1,0 +1,88 @@
+<div class="ai-chat">
+  <button
+    type="button"
+    class="ai-chat__fab"
+    [class.is-open]="isOpen"
+    (click)="togglePanel()"
+    aria-haspopup="dialog"
+    [attr.aria-expanded]="isOpen"
+    aria-label="Chat with Jatsen's AI assistant"
+  >
+    <i class="fa-solid fa-comment-dots" *ngIf="!isOpen" aria-hidden="true"></i>
+    <i class="fa-solid fa-xmark" *ngIf="isOpen" aria-hidden="true"></i>
+  </button>
+
+  <div class="ai-chat__panel" *ngIf="isOpen" role="dialog" aria-label="Ask about Jatsen">
+    <header class="ai-chat__header">
+      <div class="ai-chat__title">
+        <span class="ai-chat__title-main">Ask about Jatsen</span>
+        <span class="ai-chat__title-sub">AI assistant · may be imperfect</span>
+      </div>
+      <button type="button" class="ai-chat__close" (click)="closePanel()" aria-label="Close chat">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </header>
+
+    <div class="ai-chat__messages" #messageList aria-live="polite">
+      <div class="ai-chat__empty" *ngIf="!messages.length">
+        <p>Ask me anything about Jatsen's experience, skills, or projects.</p>
+        <div class="ai-chat__starters">
+          <button
+            type="button"
+            class="ai-chat__starter"
+            *ngFor="let prompt of starterPrompts"
+            (click)="useStarterPrompt(prompt)"
+          >
+            {{ prompt }}
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="ai-chat__bubble"
+        *ngFor="let message of messages"
+        [class.ai-chat__bubble--user]="message.role === 'user'"
+        [class.ai-chat__bubble--assistant]="message.role === 'assistant'"
+      >
+        {{ message.content }}
+      </div>
+
+      <div class="ai-chat__bubble ai-chat__bubble--assistant ai-chat__bubble--loading" *ngIf="isLoading">
+        <span class="ai-chat__dot"></span>
+        <span class="ai-chat__dot"></span>
+        <span class="ai-chat__dot"></span>
+      </div>
+    </div>
+
+    <p class="ai-chat__error" *ngIf="errorMessage" role="alert">{{ errorMessage }}</p>
+
+    <form class="ai-chat__composer" (ngSubmit)="send()">
+      <textarea
+        #chatInput
+        class="ai-chat__input"
+        rows="1"
+        name="message"
+        [(ngModel)]="inputValue"
+        [maxlength]="maxLength"
+        placeholder="Ask about experience, skills, projects..."
+        (keydown)="onKeydown($event)"
+        [disabled]="isLoading"
+      ></textarea>
+      <button
+        type="submit"
+        class="ai-chat__send"
+        [disabled]="isLoading || !inputValue.trim()"
+        aria-label="Send message"
+      >
+        <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+      </button>
+    </form>
+
+    <p class="ai-chat__disclaimer">
+      AI-generated, may be imperfect — for anything important,
+      <a routerLink="/book-call" (click)="closePanel()">book a call</a>
+      or
+      <a routerLink="/send-message" (click)="closePanel()">send a message</a>.
+    </p>
+  </div>
+</div>
