@@ -1,0 +1,50 @@
+<main class="post-page">
+  <div *ngIf="notFound" class="post-not-found">
+    <p>Post not found.</p>
+    <a routerLink="/blog" class="post-back">← Back to blog</a>
+  </div>
+
+  <div *ngIf="post" class="post-content">
+
+    <div class="post-hero">
+      <div class="post-container">
+        <a routerLink="/blog" class="post-back" (click)="goBack(); $event.preventDefault()">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+        <div class="post-meta-row">
+          <span class="post-date">{{ post.date }}</span>
+          <span *ngIf="post.readTime" class="post-readtime">{{ post.readTime }}</span>
+        </div>
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-tags" *ngIf="post.tags?.length">
+          <span *ngFor="let tag of post.tags" class="post-tag">{{ tag }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="post.coverImage" class="post-cover">
+      <div class="post-container">
+        <img [src]="post.coverImage" [alt]="post.title" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="post-body">
+      <div class="post-container post-sections">
+        <section class="post-section" *ngFor="let section of post.sections">
+          <h2 *ngIf="section.heading" class="post-section-heading">{{ section.heading }}</h2>
+          <p class="post-section-body">{{ section.body }}</p>
+        </section>
+      </div>
+    </div>
+
+    <div class="post-footer-nav" *ngIf="nextPost && nextPost.slug !== post.slug">
+      <div class="post-container">
+        <a [routerLink]="['/blog', nextPost.slug]" class="post-next">
+          <div class="post-next-label">Next Post</div>
+          <div class="post-next-title">{{ nextPost.title }} <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>

@@ -9,3 +9,10 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Custom cursor (home page) replaces the native pointer app-wide, since
+   navbar/footer are global chrome rendered outside the home page's own
+   component template and its scoped styles can't reach them. */
+* {
+  cursor: none !important;
+}

@@ -1,0 +1,137 @@
+<main class="pd-page">
+  <div *ngIf="notFound" class="pd-not-found">
+    <p>Project not found.</p>
+    <a routerLink="/" class="pd-back">← Back to home</a>
+  </div>
+
+  <div *ngIf="project" [attr.data-key]="animKey" class="pd-content" [class.pd-content--leave]="isLeaving">
+
+    <!-- Title block -->
+    <div class="pd-hero">
+      <div class="pd-container">
+        <a routerLink="/" class="pd-back" (click)="goBack(); $event.preventDefault()">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </a>
+        <div class="pd-breadcrumb">
+          <span>{{ project.category | uppercase }}</span>
+          <span class="pd-breadcrumb-sep" aria-hidden="true">/</span>
+          <span>{{ project.name }}</span>
+        </div>
+        <h1 class="pd-title">{{ project.name }}</h1>
+        <p class="pd-summary">{{ project.summary }}</p>
+      </div>
+    </div>
+
+    <!-- Banner image / mockup -->
+    <div class="pd-banner">
+      <div class="pd-container">
+
+        <!-- Browser + Mobile mockup -->
+        <div *ngIf="project.mockupType === 'browser-mobile' && project.liveUrl" class="pd-mockup">
+          <div class="pd-mockup-browser">
+            <div class="pd-mockup-browser__bar">
+              <span class="pd-mockup-browser__dot"></span>
+              <span class="pd-mockup-browser__dot"></span>
+              <span class="pd-mockup-browser__dot"></span>
+              <span class="pd-mockup-browser__url">{{ project.liveUrl }}</span>
+            </div>
+            <div class="pd-mockup-browser__screen">
+              <iframe [src]="safeUrl" loading="lazy" title="Desktop preview"></iframe>
+            </div>
+          </div>
+
+          <div class="pd-mockup-phone">
+            <div class="pd-mockup-phone__frame">
+              <div class="pd-mockup-phone__notch"></div>
+              <div class="pd-mockup-phone__screen">
+                <iframe [src]="safeUrl" loading="lazy" title="Mobile preview"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Static image -->
+        <div *ngIf="!project.mockupType" class="pd-banner-img" [class.pd-banner-img--empty]="!project.previewImage">
+          <img *ngIf="project.previewImage" [src]="project.previewImage" [alt]="project.name" loading="lazy" />
+          <div *ngIf="!project.previewImage" class="pd-banner-placeholder">
+            <i class="fa-regular fa-image" aria-hidden="true"></i>
+            <span>No preview image yet</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Info panel -->
+    <div class="pd-meta-section">
+      <div class="pd-container">
+        <div class="pd-meta-row">
+          <div class="pd-meta-block" *ngIf="project.category">
+            <span class="pd-meta-label">TYPE</span>
+            <span class="pd-meta-value">{{ project.category }}</span>
+          </div>
+          <div class="pd-meta-block" *ngIf="project.role">
+            <span class="pd-meta-label">ROLE</span>
+            <span class="pd-meta-value">{{ project.role }}</span>
+          </div>
+          <div class="pd-meta-block" *ngIf="project.timeline">
+            <span class="pd-meta-label">BUILT</span>
+            <span class="pd-meta-value">{{ project.timeline!.started }}</span>
+          </div>
+          <div class="pd-meta-block" *ngIf="project.timeline">
+            <span class="pd-meta-label">UPDATED</span>
+            <span class="pd-meta-value">{{ project.timeline!.shipped }}</span>
+          </div>
+        </div>
+
+        <div class="pd-actions">
+          <a *ngIf="project.liveUrl" [href]="project.liveUrl" target="_blank" rel="noreferrer" class="pd-btn pd-btn--primary">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Get Latest Release
+          </a>
+          <a *ngIf="project.githubUrl" [href]="project.githubUrl" target="_blank" rel="noreferrer" class="pd-btn pd-btn--ghost">
+            <i class="fa-brands fa-github"></i> GitHub
+          </a>
+        </div>
+
+        <div class="pd-tags" *ngIf="project.tags?.length">
+          <span *ngFor="let tag of project.tags" class="pd-tag">
+            <ng-container *ngIf="getTagIcon(tag) as icon">
+              <i *ngIf="icon.type === 'fa'" [class]="icon.cls" [style.color]="icon.color" aria-hidden="true"></i>
+              <span *ngIf="icon.type === 'badge'" class="pd-tag-badge" [style.color]="icon.color" [style.background]="icon.background" [style.padding]="icon.background ? '1px 4px' : null" [style.borderRadius]="icon.background ? '3px' : null">{{ icon.text }}</span>
+            </ng-container>
+            {{ tag }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sections -->
+    <div class="pd-body">
+      <div class="pd-container pd-sections">
+        <ng-container *ngFor="let section of project.sections; let i = index">
+          <section class="pd-section">
+            <div class="pd-section-num">{{ (i + 1).toString().padStart(2, '0') }}</div>
+            <div class="pd-section-content">
+              <h2 class="pd-section-heading">{{ section.heading }}</h2>
+              <p class="pd-section-body">{{ section.body }}</p>
+            </div>
+          </section>
+          <div *ngIf="project.images && project.images[i]" class="pd-image-block">
+            <img [src]="project.images![i]" [alt]="section.heading" loading="lazy" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Next project -->
+    <div class="pd-footer-nav">
+      <div class="pd-container">
+        <a *ngIf="nextProject" [routerLink]="['/project', nextProject.id]" class="pd-next">
+          <div class="pd-next-label">Next Project</div>
+          <div class="pd-next-name">{{ nextProject.name }} <i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</main>

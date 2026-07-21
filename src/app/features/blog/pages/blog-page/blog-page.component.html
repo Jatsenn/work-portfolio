@@ -1,0 +1,44 @@
+<main class="blog-page">
+  <div class="blog-hero">
+    <div class="blog-container">
+      <a routerLink="/" class="blog-back">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </a>
+      <div class="blog-breadcrumb">
+        <span>WRITING</span>
+        <span class="blog-breadcrumb-sep" aria-hidden="true">/</span>
+        <span>Blog</span>
+      </div>
+      <h1 class="blog-title">Blog</h1>
+      <p class="blog-summary">
+        Notes on the tricks, gotchas, and lessons I pick up while shipping software — written mostly for future me, shared in case it helps you too.
+      </p>
+    </div>
+  </div>
+
+  <div class="blog-body">
+    <div class="blog-container">
+      <div *ngIf="posts.length; else empty" class="blog-list">
+        <a *ngFor="let post of posts" [routerLink]="['/blog', post.slug]" class="blog-row">
+          <div class="blog-row-meta">
+            <span class="blog-row-date">{{ post.date }}</span>
+            <span *ngIf="post.readTime" class="blog-row-readtime">{{ post.readTime }}</span>
+          </div>
+          <h2 class="blog-row-title">{{ post.title }}</h2>
+          <p class="blog-row-excerpt">{{ post.excerpt }}</p>
+          <div class="blog-row-tags" *ngIf="post.tags?.length">
+            <span *ngFor="let tag of post.tags" class="blog-row-tag">{{ tag }}</span>
+          </div>
+          <span class="blog-row-arrow"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></span>
+        </a>
+      </div>
+
+      <ng-template #empty>
+        <div class="blog-empty">
+          <i class="fa-solid fa-pen-nib" aria-hidden="true"></i>
+          <p>No posts yet — first one's brewing.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,95 @@
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 19px;
+  height: 26px;
+}
+
+.cursor-arrow-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  filter:
+    drop-shadow(0 1px 1px rgba(10, 10, 15, 0.25))
+    drop-shadow(0 4px 6px rgba(10, 10, 15, 0.25));
+}
+
+.cursor-grad-stop-a {
+  stop-color: var(--cursor-arrow-start);
+}
+
+.cursor-grad-stop-b {
+  stop-color: var(--cursor-arrow-end);
+}
+
+.cursor-arrow-svg path {
+  stroke: var(--color-text);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+  transition: fill 0.2s ease, stroke 0.2s ease;
+}
+
+/* Shadow-side facet — darkens the trailing edge to fake a folded, 3D arrow */
+.cursor-arrow-shade {
+  fill: var(--cursor-arrow-end);
+  filter: brightness(0.82);
+}
+
+.cursor-dot.is-hovering .cursor-arrow-svg {
+  transform: scale(1.15);
+}
+
+.cursor-dot.is-hovering .cursor-arrow-svg path {
+  stroke: var(--color-bg);
+}
+
+.cursor-dot.is-hovering .cursor-arrow-face,
+.cursor-dot.is-hovering .cursor-arrow-shade {
+  fill: var(--glow-coral);
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(124, 111, 255, 0.55);
+  margin-left: -18px;
+  margin-top: -18px;
+  transition:
+    width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.25s ease,
+    background 0.25s ease,
+    margin 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.2s ease;
+}
+
+/* Hovering a clickable element */
+.cursor-ring.is-hovering {
+  width: 52px;
+  height: 52px;
+  margin-left: -26px;
+  margin-top: -26px;
+  border-color: var(--glow-coral);
+  background: rgba(255, 107, 107, 0.06);
+}
+
+/* Hovering the globe — show grab crosshair ring */
+.cursor-ring.is-grab {
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  border-color: rgba(124, 111, 255, 0.8);
+  border-style: dashed;
+  background: rgba(124, 111, 255, 0.04);
+}

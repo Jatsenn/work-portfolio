@@ -1,0 +1,55 @@
+<main class="cert-page">
+  <div class="cert-hero">
+    <div class="cert-container">
+      <a routerLink="/" class="cert-back" (click)="goBack(); $event.preventDefault()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </a>
+      <div class="cert-breadcrumb">
+        <span>CREDENTIALS</span>
+        <span class="cert-breadcrumb-sep" aria-hidden="true">/</span>
+        <span>Certificates</span>
+      </div>
+      <h1 class="cert-title">Certificates</h1>
+      <p class="cert-summary">
+        Courses and programs I've completed to sharpen my skills outside of day-to-day work.
+      </p>
+    </div>
+  </div>
+
+  <div class="cert-body">
+    <div class="cert-container">
+      <div *ngIf="certifications.length; else empty" class="cert-grid">
+        <article class="cert-card" *ngFor="let cert of certifications">
+          <div *ngIf="cert.imageUrl" class="cert-card-image">
+            <img [src]="cert.imageUrl" [alt]="cert.name" loading="lazy" />
+          </div>
+          <div class="cert-card-icon">
+            <ng-container *ngIf="getIssuerIcon(cert.issuer) as icon">
+              <i *ngIf="icon.type === 'fa'" [class]="icon.cls" [style.color]="icon.color" aria-hidden="true"></i>
+              <span *ngIf="icon.type === 'badge'" class="cert-badge" [style.color]="icon.color" [style.background]="icon.background">{{ icon.text }}</span>
+            </ng-container>
+          </div>
+          <h2 class="cert-card-name">{{ cert.name }}</h2>
+          <p class="cert-card-issuer">{{ cert.issuer }}</p>
+          <p class="cert-card-date">{{ cert.date }}</p>
+          <a
+            *ngIf="cert.credentialUrl"
+            [href]="cert.credentialUrl"
+            target="_blank"
+            rel="noreferrer"
+            class="cert-card-link"
+          >
+            View Credential <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </a>
+        </article>
+      </div>
+
+      <ng-template #empty>
+        <div class="cert-empty">
+          <i class="fa-solid fa-certificate" aria-hidden="true"></i>
+          <p>Certificates coming soon.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</main>

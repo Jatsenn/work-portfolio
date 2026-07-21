@@ -1,14 +1,12 @@
 <canvas #shootingStars class="shooting-stars-canvas" aria-hidden="true" style="display:none"></canvas>
+<div class="project-cursor" #projectCursor aria-hidden="true">
+  <svg viewBox="0 0 140 140" class="project-cursor-svg">
+    <path id="projectCursorPath" d="M 70,70 m -46,0 a 46,46 0 1,1 92,0 a 46,46 0 1,1 -92,0" fill="none"/>
+    <text><textPath href="#projectCursorPath" startOffset="0%">VISIT PROJECT · VISIT PROJECT · </textPath></text>
+  </svg>
+  <i class="fa-regular fa-eye project-cursor-eye"></i>
+</div>
 <main id="page">
-  <div class="cursor-dot" #cursorDot></div>
-  <div class="cursor-ring" #cursorRing></div>
-  <div class="project-cursor" #projectCursor aria-hidden="true">
-    <svg viewBox="0 0 140 140" class="project-cursor-svg">
-      <path id="projectCursorPath" d="M 70,70 m -46,0 a 46,46 0 1,1 92,0 a 46,46 0 1,1 -92,0" fill="none"/>
-      <text><textPath href="#projectCursorPath" startOffset="0%">VISIT PROJECT · VISIT PROJECT · </textPath></text>
-    </svg>
-    <i class="fa-regular fa-eye project-cursor-eye"></i>
-  </div>
   <section id="home" class="hero section">
 
     <!-- top center pill -->
@@ -61,8 +59,8 @@
       </div>
       <div class="hero-corner">
         <div class="hero-corner-text-right">
-          <span class="hero-corner-top">Software Engineer,</span>
-          <span class="hero-corner-bot">&amp; AI Engineer</span>
+          <span class="hero-corner-top">Software</span>
+          <span class="hero-corner-bot">Engineer</span>
         </div>
         <i class="fa-solid fa-microchip" aria-hidden="true"></i>
       </div>
@@ -73,11 +71,11 @@
   <section id="about" class="section reveal">
     <div class="container about-bento">
       <div class="about-grid" role="list">
-        <article class="about-card about-card--name" role="listitem">
+        <article class="about-card about-card--name reveal-item" role="listitem">
           <p class="about-card-label">PROFILE</p>
           <div class="about-name-block">
             <div class="about-name-big">JATSEN</div>
-            <div class="about-name-sub">Software Engineer • AI Engineer</div>
+            <div class="about-name-sub">Software Engineer</div>
           </div>
           <div class="about-links" aria-label="Social links">
             <a class="about-link" href="https://{{ content.contact.linkedin }}" target="_blank" rel="noreferrer" aria-label="LinkedIn">
@@ -92,13 +90,13 @@
           </div>
         </article>
 
-        <article class="about-card about-card--intro" role="listitem">
+        <article class="about-card about-card--intro reveal-item" role="listitem">
           <p class="about-card-label">INTRO</p>
           <p class="about-card-lead">
-            I build scalable products, AI-powered systems, and automations that feel effortless to use.
+            I build scalable products and automations that feel effortless to use.
           </p>
           <p class="about-card-body">
-            I like shipping modern web experiences end-to-end: clean architecture, high performance, and thoughtful UI. When it makes sense, I bring LLMs into the workflow to unlock smarter interfaces and faster operations.
+            I like shipping modern web experiences end-to-end: clean architecture, high performance, and thoughtful UI. I lean on AI-assisted tools like Claude Code to move faster without cutting corners.
           </p>
           <div class="about-meta">
             <span class="about-meta-item">
@@ -112,66 +110,82 @@
           </div>
         </article>
 
-        <article class="about-card about-card--mindset" role="listitem">
-          <p class="about-card-label">MINDSET</p>
-          <h3 class="about-card-title">Engineering is more than code.</h3>
-          <p class="about-card-body">
-            I care about discipline, consistency, and growth — the habits that compound into real craft. For me, the job is to remove friction, clarify complexity, and build products that people genuinely trust.
-          </p>
+        <article class="about-card about-card--mindset reveal-item" role="listitem">
+          <p class="about-card-label">EDUCATION</p>
+          <h3 class="about-card-title">{{ content.education[0].degree }}</h3>
+          <div class="about-meta">
+            <span class="about-meta-item">
+              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+              {{ content.education[0].school }}
+            </span>
+            <span class="about-meta-item">
+              <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+              {{ content.education[0].period }}
+            </span>
+          </div>
           <div class="about-mini">
-            <span class="about-mini-tag">Consistency</span>
-            <span class="about-mini-tag">Curiosity</span>
-            <span class="about-mini-tag">Ownership</span>
+            <ng-container *ngFor="let detail of content.education[0].details">
+              <span *ngFor="let course of detail.split(': ')[1]?.split(', ') ?? []" class="about-mini-tag">{{ course }}</span>
+            </ng-container>
           </div>
         </article>
 
-        <article class="about-card about-card--lifestyle" role="listitem">
+        <article class="about-card about-card--lifestyle reveal-item" role="listitem">
           <p class="about-card-label">LIFESTYLE</p>
           <h3 class="about-card-title">Balance fuels better work.</h3>
           <p class="about-card-body">
             Training keeps my mind sharp and my standards high. The same rhythm that builds endurance also builds great software.
           </p>
-          <div
-            class="about-coverflow"
-            aria-label="Lifestyle carousel"
-            (pointerdown)="onLifestylePointerDown($event)"
-            (pointermove)="onLifestylePointerMove($event)"
-            (pointerup)="onLifestylePointerUp()"
-            (pointercancel)="onLifestylePointerUp()"
-            (pointerleave)="onLifestylePointerUp()"
-            (mouseenter)="pauseLifestyleAuto()"
-            (mouseleave)="resumeLifestyleAuto()"
-          >
-            <div class="about-coverflow-bg" aria-hidden="true"></div>
-            <ng-container *ngFor="let card of lifestyleCards; let i = index">
+          <div class="reel-lifestyle" aria-label="Lifestyle photo reel">
+            <button
+              *ngIf="reelCanScrollPrev"
+              class="reel-arrow reel-arrow--prev"
+              type="button"
+              (click)="scrollReel(-1)"
+              aria-label="Previous photo"
+            >
+              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </button>
+
+            <div
+              class="reel-track"
+              #reelTrack
+              role="list"
+              aria-label="Lifestyle photos"
+              tabindex="0"
+              (scroll)="onReelScroll()"
+              (keydown)="onReelKeydown($event)"
+            >
               <button
+                *ngFor="let card of lifestyleCards; let i = index"
                 type="button"
-                class="about-coverflow-card"
-                [class.is-active]="i === activeLifestyleIndex"
-                [style.--d]="i - activeLifestyleIndex"
-                (click)="setLifestyleActive(i)"
-                [attr.aria-label]="card.label"
+                role="listitem"
+                class="reel-card"
+                (click)="openLightbox(i)"
+                [attr.aria-label]="'View ' + card.label + ' photo'"
               >
                 <img [src]="card.src" [alt]="card.label" loading="lazy" />
-                <span class="about-coverflow-label">{{ card.label }}</span>
+                <span class="reel-card-label">{{ card.label }}</span>
               </button>
-            </ng-container>
-          </div>
-          <div class="about-pill-row" aria-label="Hobbies">
-            <span class="about-pill"><i class="fa-solid fa-hand-fist" aria-hidden="true"></i> Boxing</span>
-            <span class="about-pill"><i class="fa-solid fa-person-running" aria-hidden="true"></i> Running</span>
-            <span class="about-pill"><i class="fa-solid fa-person-walking" aria-hidden="true"></i> Walking</span>
-            <span class="about-pill"><i class="fa-solid fa-book" aria-hidden="true"></i> Reading</span>
-            <span class="about-pill"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i> Fitness</span>
-            <span class="about-pill"><i class="fa-solid fa-brain" aria-hidden="true"></i> AI &amp; startups</span>
+            </div>
+
+            <button
+              *ngIf="reelCanScrollNext"
+              class="reel-arrow reel-arrow--next"
+              type="button"
+              (click)="scrollReel(1)"
+              aria-label="Next photo"
+            >
+              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </button>
           </div>
         </article>
 
-        <article class="about-card about-card--craft" role="listitem">
+        <article class="about-card about-card--craft reveal-item" role="listitem">
           <p class="about-card-label">CRAFT + COLLAB</p>
           <h3 class="about-card-title">Build. Learn. Ship.</h3>
           <p class="about-card-body">
-            From landing pages to platforms — I ship scalable apps, websites, and automations, with AI systems when they add real leverage.
+            From landing pages to platforms — I ship scalable apps, websites, and automations, using AI-assisted tools to move faster along the way.
           </p>
 
           <div class="tech-marquee" aria-label="Tech stack marquee">
@@ -199,7 +213,7 @@
           <div class="about-collab">
             <h3 class="about-card-title">Open to collaboration.</h3>
             <p class="about-card-body">
-              Freelance, startup builds, and innovative projects — especially where product + engineering meets AI.
+              Freelance, startup builds, and innovative projects — especially where clean engineering ships fast.
             </p>
             <div class="about-status" aria-label="Availability status">
               <span class="about-status-dot" aria-hidden="true"></span>
@@ -209,7 +223,7 @@
           </div>
         </article>
 
-        <figure class="about-card about-card--portrait" role="listitem">
+        <figure class="about-card about-card--portrait reveal-item" role="listitem">
           <p class="about-card-label">PORTRAIT</p>
           <div class="about-portrait-frame" aria-label="Portrait gallery">
             <div class="about-portrait-flip">
@@ -280,7 +294,11 @@
           </div>
         </div>
 
-        <article *ngFor="let exp of content.experiences; let i = index" class="resume-item">
+        <article
+          *ngFor="let exp of content.experiences; let i = index"
+          class="resume-item reveal-item"
+          [style.transition-delay.ms]="revealDelay(i)"
+        >
           <div class="resume-left">
             <p class="resume-period">{{ exp.period }}</p>
             <p class="resume-company">{{ exp.company }}</p>
@@ -309,71 +327,60 @@
           </div>
         </article>
       </div>
-
-      <h2 class="mt-lg">Education</h2>
-      <div class="edu-grid">
-        <article *ngFor="let edu of content.education" class="surface-card edu-card hover-lift">
-          <div class="edu-icon-col">
-            <div class="edu-icon">
-              <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
-            </div>
-            <span class="edu-period-badge">{{ edu.period }}</span>
-          </div>
-
-          <div class="edu-body">
-            <p class="edu-label">BACHELOR'S DEGREE</p>
-            <h3 class="edu-degree">{{ edu.degree }}</h3>
-            <p class="resume-meta edu-school-meta">
-              <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
-              {{ edu.school }}
-            </p>
-            <div class="edu-coursework">
-              <ng-container *ngFor="let detail of edu.details">
-                <span *ngFor="let course of detail.split(': ')[1]?.split(', ') ?? []" class="resume-tag">{{ course }}</span>
-              </ng-container>
-            </div>
-          </div>
-        </article>
-      </div>
     </div>
   </section>
 
   <section id="portfolio" class="section alt reveal">
     <div class="container">
-      <p class="section-kicker">My Portfolio</p>
-      <h2>Selected Work</h2>
+      <p class="section-kicker">CASE STUDIES</p>
+      <h2 class="curated-title">Curated <em>Work</em></h2>
 
-      <div class="filter-chips" role="tablist" aria-label="Project categories">
-        <button
-          *ngFor="let category of projectCategories"
-          type="button"
-          class="chip"
-          [class.active]="activeCategory === category"
-          (click)="selectCategory(category)"
+      <div class="curated-list">
+        <article
+          *ngFor="let project of content.projects; let i = index"
+          class="curated-item reveal-item"
+          [class.curated-item--flip]="i % 2 === 1"
+          [style.transition-delay.ms]="revealDelay(i)"
         >
-          {{ category }}
-        </button>
-      </div>
-
-      <div class="card-grid">
-        <article *ngFor="let project of filteredProjects; let i = index" class="surface-card hover-lift project-card">
-          <div class="project-preview" [class.alt]="i % 2 === 1" [class.live]="!!project.liveUrl">
-            <img *ngIf="project.previewImage" class="project-preview-image" [src]="project.previewImage" [alt]="project.name" />
-            <iframe
-              *ngIf="project.liveUrl && !project.previewImage"
-              class="project-frame"
-              [src]="getSafePreviewUrl(project.liveUrl)"
-              title="Live app preview"
-              loading="lazy"
-            ></iframe>
-            <i *ngIf="!project.liveUrl" [class]="projectIcons[i % projectIcons.length]" aria-hidden="true"></i>
-            <span>{{ project.category }}</span>
+          <div class="curated-info">
+            <div class="curated-meta">
+              <span class="curated-num">{{ (i + 1).toString().padStart(2, '0') }}</span>
+              <span class="curated-divider" aria-hidden="true"></span>
+              <span class="curated-type">{{ project.category | uppercase }}</span>
+              <span class="curated-date">{{ project.date }}</span>
+            </div>
+            <h3 class="curated-name">
+              <a [routerLink]="['/project', project.id]" class="curated-name-link">{{ project.name }}</a>
+            </h3>
+            <a
+              class="curated-desc-card"
+              [routerLink]="['/project', project.id]"
+            >
+              <span>{{ project.summary }}</span>
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            </a>
+            <div class="curated-tags" *ngIf="project.tags?.length">
+              <span *ngFor="let tag of project.tags" class="curated-tag">
+                <ng-container *ngIf="getTagIcon(tag) as icon">
+                  <i *ngIf="icon.type === 'fa'" [class]="icon.cls" [style.color]="icon.color" aria-hidden="true"></i>
+                  <span *ngIf="icon.type === 'badge'" class="ctag-badge" [style.color]="icon.color" [style.background]="icon.type === 'badge' ? icon.background : null" [style.padding]="icon.type === 'badge' && icon.background ? '1px 4px' : null" [style.borderRadius]="icon.type === 'badge' && icon.background ? '3px' : null">{{ icon.text }}</span>
+                </ng-container>
+                {{ tag }}
+              </span>
+            </div>
           </div>
-          <p class="muted">{{ project.stack }}</p>
-          <h3>{{ project.name }}</h3>
-          <p>{{ project.summary }}</p>
-          <a *ngIf="project.liveUrl" class="project-link" [href]="project.liveUrl" target="_blank" rel="noreferrer">
-            View Live <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+
+          <a class="curated-preview" [routerLink]="['/project', project.id]">
+            <img
+              *ngIf="project.previewImage"
+              class="curated-preview-img"
+              [src]="project.previewImage"
+              [alt]="project.name"
+              loading="lazy"
+            />
+            <div *ngIf="!project.previewImage" class="curated-placeholder">
+              <i class="fa-solid fa-code" aria-hidden="true"></i>
+            </div>
           </a>
         </article>
       </div>
@@ -384,5 +391,28 @@
   <button *ngIf="showBackToTop" class="to-top" type="button" (click)="scrollTop()" aria-label="Back to top">
     ↑
   </button>
+
+  <div
+    class="lightbox-backdrop"
+    *ngIf="activeLightboxCard as photo"
+    (click)="closeLightbox()"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-label]="photo.label + ' photo viewer'"
+  >
+    <button class="lightbox-close" type="button" (click)="closeLightbox()" aria-label="Close">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    <button class="lightbox-nav lightbox-nav--prev" type="button" (click)="prevLightbox($event)" aria-label="Previous photo">
+      <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+    </button>
+    <div class="lightbox-frame" (click)="$event.stopPropagation()">
+      <img [src]="photo.src" [alt]="photo.label" />
+      <p class="lightbox-caption">{{ photo.label }}</p>
+    </div>
+    <button class="lightbox-nav lightbox-nav--next" type="button" (click)="nextLightbox($event)" aria-label="Next photo">
+      <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+    </button>
+  </div>
 
 </main>

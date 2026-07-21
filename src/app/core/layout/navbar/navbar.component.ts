@@ -20,6 +20,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren('navLinkEl') private navLinkRefs?: QueryList<ElementRef<HTMLElement>>;
 
   @ViewChild('cmdInput') private cmdInputRef?: ElementRef<HTMLInputElement>;
+  @ViewChild('moreBtn') private moreBtnRef?: ElementRef<HTMLElement>;
+
+  moreDropdownTop = 0;
+  moreDropdownLeft = 0;
 
   readonly links = [
     { id: 'home', label: 'Home' },
@@ -28,6 +32,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     { id: 'resume', label: 'Resume' },
     { id: 'portfolio', label: 'Portfolio' },
   ];
+
+  readonly moreLinks = [
+    { label: 'Certificates', path: '/certificates', icon: 'fa-solid fa-certificate' },
+    { label: 'Blog', path: '/blog', icon: 'fa-solid fa-pen-nib' },
+  ];
+
+  isMoreOpen = false;
 
   isPaletteOpen = false;
   searchQuery = '';
@@ -39,6 +50,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isThemeTransitioning = false;
   transitionX = 0;
   transitionY = 0;
+  scrollProgress = 0;
   private hoveredLinkId: string | null = null;
 
   readonly paletteGroups = [
@@ -51,6 +63,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         { title: 'Resume', sub: 'My experience', icon: 'fa-solid fa-file-lines', action: () => this.onNavClick(new MouseEvent('click'), 'resume') },
         { title: 'Portfolio', sub: 'View my work', icon: 'fa-solid fa-layer-group', action: () => this.onNavClick(new MouseEvent('click'), 'portfolio') },
         { title: 'Book a Call', sub: 'Schedule a meeting', icon: 'fa-solid fa-phone', action: () => { this.closePalette(); this.router.navigate(['/book-call']); } },
+        { title: 'Certificates', sub: 'Courses and credentials', icon: 'fa-solid fa-certificate', action: () => { this.closePalette(); this.router.navigate(['/certificates']); } },
+        { title: 'Blog', sub: 'Dev tips and lessons learned', icon: 'fa-solid fa-pen-nib', action: () => { this.closePalette(); this.router.navigate(['/blog']); } },
       ],
     },
   ];
@@ -110,6 +124,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   private scrollObserver: IntersectionObserver | null = null;
   isHomePage = true;
   isBookCallPage = false;
+  private currentUrl = '/';
   private routerSub?: Subscription;
 
   constructor(private zone: NgZone, private cdr: ChangeDetectorRef, private router: Router) {}
@@ -130,6 +145,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       filter(e => e instanceof NavigationEnd)
     ).subscribe((e: NavigationEnd) => {
       const url = e.urlAfterRedirects.split('#')[0];
+      this.currentUrl = url;
       this.isHomePage = url === '/' || url === '';
       this.isBookCallPage = url === '/book-call';
       if (!this.isHomePage) {
@@ -148,6 +164,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.schedulePillUpdate();
     // Defer until router outlet has rendered the page sections
     setTimeout(() => this.setupIntersectionObserver());
+    this.updateScrollProgress();
   }
 
   ngOnDestroy(): void {
@@ -155,6 +172,31 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.routerSub?.unsubscribe();
     window.removeEventListener('hashchange', this.onHashChange);
     window.removeEventListener('resize', this.onResize);
+    if (this.scrollProgressRaf != null) {
+      cancelAnimationFrame(this.scrollProgressRaf);
+    }
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    this.scheduleScrollProgressUpdate();
+  }
+
+  private scrollProgressRaf: number | null = null;
+  private scheduleScrollProgressUpdate(): void {
+    if (this.scrollProgressRaf != null) {
+      cancelAnimationFrame(this.scrollProgressRaf);
+    }
+    this.scrollProgressRaf = requestAnimationFrame(() => {
+      this.scrollProgressRaf = null;
+      this.updateScrollProgress();
+    });
+  }
+
+  private updateScrollProgress(): void {
+    const doc = document.documentElement;
+    const scrollable = doc.scrollHeight - doc.clientHeight;
+    this.scrollProgress = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
   }
 
   goHome(): void {
@@ -168,6 +210,35 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   closeMenu(): void {
     this.isMenuOpen = false;
+  }
+
+  toggleMore(event: Event): void {
+    event.stopPropagation();
+    this.isMoreOpen = !this.isMoreOpen;
+    if (this.isMoreOpen) {
+      const rect = this.moreBtnRef?.nativeElement.getBoundingClientRect();
+      if (rect) {
+        this.moreDropdownTop = rect.bottom + 10;
+        this.moreDropdownLeft = rect.left + rect.width / 2;
+      }
+    }
+  }
+
+  closeMore(): void {
+    this.isMoreOpen = false;
+  }
+
+  isMoreLinkActive(path: string): boolean {
+    return this.currentUrl === path || this.currentUrl.startsWith(`${path}/`);
+  }
+
+  get isOnMorePage(): boolean {
+    return this.moreLinks.some((item) => this.isMoreLinkActive(item.path));
+  }
+
+  @HostListener('document:click')
+  onDocumentClick(): void {
+    this.closeMore();
   }
 
   onNavClick(event: Event, sectionId: string): void {

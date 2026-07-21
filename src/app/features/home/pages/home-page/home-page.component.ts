@@ -9,7 +9,7 @@ import {
   ViewChild,
   ElementRef,
 } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { HOME_CONTENT } from '../../data/home-content';
 import * as THREE from 'three';
@@ -74,6 +74,8 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     'assets/images/jatsen-profile.png',
   ];
 
+  private readonly prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+
   availCardOpen = false;
   emailCopied = false;
   private emailCopyTimer: ReturnType<typeof setTimeout> | null = null;
@@ -109,85 +111,101 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   heroImageMissing = false;
 
   readonly lifestyleCards = [
-    { src: 'assets/images/about/running.svg', label: 'Running' },
+    { src: 'assets/images/about/running.jpeg', label: 'Running' },
     { src: 'assets/images/about/boxing.svg', label: 'Boxing' },
-    { src: 'assets/images/about/walking.svg', label: 'Walking' },
-    { src: 'assets/images/about/reading.svg', label: 'Reading' },
-    { src: 'assets/images/about/fitness.svg', label: 'Fitness' },
+    { src: 'assets/images/about/walking.jpeg', label: 'Walking' },
+    { src: 'assets/images/about/reading.jpeg', label: 'Reading' },
+    { src: 'assets/images/about/fitness.jpeg', label: 'Fitness' },
   ];
 
-  activeLifestyleIndex = 0;
-  private lifestyleDragStartX: number | null = null;
-  private lifestyleDragDeltaX = 0;
-  private lifestyleAutoTimer: ReturnType<typeof setInterval> | null = null;
-  private lifestyleAutoPaused = false;
+  lightboxIndex: number | null = null;
 
-  onLifestylePointerDown(event: PointerEvent): void {
-    this.pauseLifestyleAuto();
-    const target = event.currentTarget as HTMLElement | null;
-    if (!target) {
-      return;
-    }
-
-    target.setPointerCapture?.(event.pointerId);
-    this.lifestyleDragStartX = event.clientX;
-    this.lifestyleDragDeltaX = 0;
+  get activeLightboxCard() {
+    return this.lightboxIndex !== null ? this.lifestyleCards[this.lightboxIndex] : null;
   }
 
-  onLifestylePointerMove(event: PointerEvent): void {
-    if (this.lifestyleDragStartX === null) {
-      return;
-    }
-
-    this.lifestyleDragDeltaX = event.clientX - this.lifestyleDragStartX;
-  }
-
-  onLifestylePointerUp(): void {
-    if (this.lifestyleDragStartX === null) {
-      return;
-    }
-
-    const swipeThreshold = 42;
-    if (this.lifestyleDragDeltaX > swipeThreshold) {
-      this.activeLifestyleIndex = (this.activeLifestyleIndex - 1 + this.lifestyleCards.length) % this.lifestyleCards.length;
-      this.cdr.markForCheck();
-    } else if (this.lifestyleDragDeltaX < -swipeThreshold) {
-      this.activeLifestyleIndex = (this.activeLifestyleIndex + 1) % this.lifestyleCards.length;
-      this.cdr.markForCheck();
-    }
-
-    this.lifestyleDragStartX = null;
-    this.lifestyleDragDeltaX = 0;
-    this.resumeLifestyleAuto();
-  }
-
-  setLifestyleActive(index: number): void {
-    this.activeLifestyleIndex = index;
+  openLightbox(index: number): void {
+    this.lightboxIndex = index;
     this.cdr.markForCheck();
   }
 
-  pauseLifestyleAuto(): void {
-    this.lifestyleAutoPaused = true;
+  closeLightbox(): void {
+    this.lightboxIndex = null;
+    this.cdr.markForCheck();
   }
 
-  resumeLifestyleAuto(): void {
-    this.lifestyleAutoPaused = false;
+  nextLightbox(event: Event): void {
+    event.stopPropagation();
+    if (this.lightboxIndex === null) return;
+    this.lightboxIndex = (this.lightboxIndex + 1) % this.lifestyleCards.length;
+    this.cdr.markForCheck();
   }
 
-  private startLifestyleAuto(): void {
-    if (this.lifestyleAutoTimer) {
-      return;
+  prevLightbox(event: Event): void {
+    event.stopPropagation();
+    if (this.lightboxIndex === null) return;
+    this.lightboxIndex = (this.lightboxIndex - 1 + this.lifestyleCards.length) % this.lifestyleCards.length;
+    this.cdr.markForCheck();
+  }
+
+  @ViewChild('reelTrack') reelTrack?: ElementRef<HTMLElement>;
+
+  reelCanScrollPrev = false;
+  reelCanScrollNext = false;
+  private reelResizeObserver?: ResizeObserver;
+  private reelArrowsRaf: number | null = null;
+
+  scrollReel(direction: number): void {
+    const track = this.reelTrack?.nativeElement;
+    if (!track) return;
+
+    const card = track.querySelector('.reel-card') as HTMLElement | null;
+    const step = card ? card.offsetWidth + 14 : 200;
+    track.scrollBy({ left: direction * step, behavior: this.prefersReducedMotion ? 'auto' : 'smooth' });
+  }
+
+  onReelScroll(): void {
+    if (this.reelArrowsRaf != null) return;
+    this.reelArrowsRaf = requestAnimationFrame(() => {
+      this.reelArrowsRaf = null;
+      this.updateReelArrows();
+    });
+  }
+
+  onReelKeydown(event: KeyboardEvent): void {
+    if (this.lightboxIndex !== null) return;
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      this.scrollReel(1);
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      this.scrollReel(-1);
     }
-
-    this.lifestyleAutoTimer = setInterval(() => {
-      if (this.lifestyleAutoPaused) {
-        return;
-      }
-
-      this.activeLifestyleIndex = (this.activeLifestyleIndex + 1) % this.lifestyleCards.length;
-      this.cdr.markForCheck();
-    }, 2600);
   }
+
+  private updateReelArrows(): void {
+    const track = this.reelTrack?.nativeElement;
+    if (!track) return;
+
+    const maxScroll = track.scrollWidth - track.clientWidth;
+    const hasOverflow = maxScroll > 1;
+    this.reelCanScrollPrev = hasOverflow && track.scrollLeft > 1;
+    this.reelCanScrollNext = hasOverflow && track.scrollLeft < maxScroll - 1;
+    this.cdr.markForCheck();
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  onLightboxKeydown(event: KeyboardEvent): void {
+    if (this.lightboxIndex === null) return;
+    if (event.key === 'Escape') {
+      this.closeLightbox();
+    } else if (event.key === 'ArrowRight') {
+      this.nextLightbox(event);
+    } else if (event.key === 'ArrowLeft') {
+      this.prevLightbox(event);
+    }
+  }
+
   isDark = false;
 
   private observer?: IntersectionObserver;
@@ -216,23 +234,12 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
 
   private shootingStarsRafId: number | null = null;
   private stars: Array<{ x: number; y: number; len: number; speed: number; angle: number; opacity: number; trail: number }> = [];
-  private mouseX = 0;
-  private mouseY = 0;
-  private ringX = 0;
-  private ringY = 0;
-  private cursorRafId: number | null = null;
 
   @ViewChild('shootingStars', { static: false })
   shootingStarsCanvas?: ElementRef<HTMLCanvasElement>;
 
   @ViewChild('globeCanvas', { static: false })
   globeCanvas?: ElementRef<HTMLCanvasElement>;
-
-  @ViewChild('cursorDot', { static: false })
-  cursorDot?: ElementRef<HTMLElement>;
-
-  @ViewChild('cursorRing', { static: false })
-  cursorRing?: ElementRef<HTMLElement>;
 
   @ViewChild('projectCursor', { static: false })
   projectCursor?: ElementRef<HTMLElement>;
@@ -318,8 +325,27 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     this.heroImageMissing = true;
   }
 
-  getSafePreviewUrl(url: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  private readonly TAG_ICONS: Record<string, { type: 'fa'; cls: string; color: string } | { type: 'badge'; text: string; color: string; background?: string }> = {
+    'Next.js':      { type: 'badge', text: 'N', color: 'var(--color-text)' },
+    'TypeScript':   { type: 'badge', text: 'TS', color: '#3178c6' },
+    'Tailwind CSS': { type: 'badge', text: '~', color: '#06b6d4' },
+    'Vercel':       { type: 'badge', text: '▲', color: 'var(--color-text)' },
+    'Angular':      { type: 'fa', cls: 'fa-brands fa-angular', color: '#dd0031' },
+    'SQL':          { type: 'badge', text: 'DB', color: '#f59e0b' },
+    'REST API':     { type: 'fa', cls: 'fa-solid fa-plug', color: '#a78bfa' },
+    'Java':         { type: 'fa', cls: 'fa-brands fa-java', color: '#f89820' },
+    'Git':          { type: 'fa', cls: 'fa-brands fa-git-alt', color: '#f05032' },
+    'AWS':          { type: 'fa', cls: 'fa-brands fa-aws', color: '#ff9900' },
+    'Agile':        { type: 'fa', cls: 'fa-solid fa-arrows-spin', color: '#60a5fa' },
+    'HTML':         { type: 'fa', cls: 'fa-brands fa-html5', color: '#e34f26' },
+    'CSS':          { type: 'fa', cls: 'fa-brands fa-css3-alt', color: '#1572b6' },
+    'JavaScript':   { type: 'fa', cls: 'fa-brands fa-js', color: '#f7df1e' },
+    'Python':       { type: 'fa', cls: 'fa-brands fa-python', color: '#3776ab' },
+    'Django':       { type: 'badge', text: 'Dj', color: '#fff', background: '#092e20' },
+  };
+
+  getTagIcon(tag: string) {
+    return this.TAG_ICONS[tag] ?? null;
   }
 
   @HostListener('window:mousemove', ['$event'])
@@ -327,36 +353,14 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     const main = document.getElementById('home');
     if (!main) return;
 
-    this.mouseX = event.clientX;
-    this.mouseY = event.clientY;
-
     // Page scanning glow
     main.style.setProperty('--mx', `${event.clientX}px`);
     main.style.setProperty('--my', `${event.clientY + window.scrollY}px`);
 
-    // Move dot instantly
-    const dot = this.cursorDot?.nativeElement;
-    if (dot) {
-      dot.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
-    }
-
-    // Detect hoverable elements for ring state
-    const ring = this.cursorRing?.nativeElement;
-    if (ring && dot) {
-      const hovered = (event.target as HTMLElement)?.closest(
-        'a, button, [role="button"], .hover-lift, .globe-item, .chip, .about-tab, .resume-tag'
-      );
-      ring.classList.toggle('is-hovering', !!hovered);
-      dot.classList.toggle('is-hovering', !!hovered);
-
-      const isGrab = (event.target as HTMLElement)?.closest('.globe');
-      ring.classList.toggle('is-grab', !!isGrab);
-    }
-
     // Project card cursor
     const projectCursorEl = this.projectCursor?.nativeElement;
     if (projectCursorEl) {
-      const onProjectCard = (event.target as HTMLElement)?.closest('.project-card');
+      const onProjectCard = (event.target as HTMLElement)?.closest('.curated-preview, .curated-desc-card');
       projectCursorEl.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
       projectCursorEl.classList.toggle('visible', !!onProjectCard);
     }
@@ -374,6 +378,11 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   onWindowScroll(): void {
     this.showBackToTop = window.scrollY > 700;
     this.updateTimelineFill();
+    this.updateProjectParallax();
+  }
+
+  revealDelay(index: number): number {
+    return Math.min(index, 5) * 60;
   }
 
   getDotThreshold(index: number): number {
@@ -409,8 +418,21 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
+  private projectPreviewEls: HTMLElement[] = [];
+
+  private updateProjectParallax(): void {
+    if (this.prefersReducedMotion || !this.projectPreviewEls.length) return;
+
+    const viewportH = window.innerHeight;
+    this.projectPreviewEls.forEach((img) => {
+      const rect = img.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const offset = this.clamp(((center - viewportH / 2) / viewportH) * 28, -14, 14);
+      img.style.transform = `translateY(${offset.toFixed(1)}px) scale(1.08)`;
+    });
+  }
+
   ngAfterViewInit(): void {
-    this.startLifestyleAuto();
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -422,31 +444,35 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
       { threshold: 0.15 },
     );
 
-    const revealElements = document.querySelectorAll('.reveal');
+    const revealElements = document.querySelectorAll('.reveal, .reveal-item');
     revealElements.forEach((element) => this.observer?.observe(element));
+
+    this.projectPreviewEls = Array.from(document.querySelectorAll<HTMLElement>('.curated-preview-img'));
+    this.updateProjectParallax();
 
     this.updateGlobeItems();
     this.initThreeGlobe();
     this.startGlobeAutoRotate();
-    this.startCursorLoop();
     setTimeout(() => {
       this.updateTimelineFill();
       if (this.resumeTimeline?.nativeElement) {
         new ResizeObserver(() => this.updateTimelineFill()).observe(this.resumeTimeline.nativeElement);
       }
+
+      this.updateReelArrows();
+      if (this.reelTrack?.nativeElement) {
+        this.reelResizeObserver = new ResizeObserver(() => this.updateReelArrows());
+        this.reelResizeObserver.observe(this.reelTrack.nativeElement);
+      }
     }, 100);
   }
 
   ngOnDestroy(): void {
-    if (this.lifestyleAutoTimer) {
-      clearInterval(this.lifestyleAutoTimer);
-      this.lifestyleAutoTimer = null;
-    }
-
     this.observer?.disconnect();
     if (this.globeRafId !== null) cancelAnimationFrame(this.globeRafId);
-    if (this.cursorRafId !== null) cancelAnimationFrame(this.cursorRafId);
     if (this.shootingStarsRafId !== null) cancelAnimationFrame(this.shootingStarsRafId);
+    if (this.reelArrowsRaf !== null) cancelAnimationFrame(this.reelArrowsRaf);
+    this.reelResizeObserver?.disconnect();
     this.globeResizeObserver?.disconnect();
     this.globeThree?.dispose();
   }
@@ -769,20 +795,6 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
       hash = Math.imul(hash, 16777619);
     }
     return (hash >>> 0) / 0xffffffff;
-  }
-
-  private startCursorLoop(): void {
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const tick = () => {
-      this.ringX = lerp(this.ringX, this.mouseX, 0.12);
-      this.ringY = lerp(this.ringY, this.mouseY, 0.12);
-      const ring = this.cursorRing?.nativeElement;
-      if (ring) {
-        ring.style.transform = `translate(${this.ringX}px, ${this.ringY}px)`;
-      }
-      this.cursorRafId = requestAnimationFrame(tick);
-    };
-    this.cursorRafId = requestAnimationFrame(tick);
   }
 
   private startGlobeAutoRotate(): void {

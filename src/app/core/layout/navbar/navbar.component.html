@@ -1,4 +1,10 @@
 <div
+  class="scroll-progress"
+  [style.transform]="'scaleX(' + scrollProgress + ')'"
+  aria-hidden="true"
+></div>
+
+<div
   class="theme-transition-overlay"
   [class.active]="isThemeTransitioning"
   [style.--tx]="transitionX + 'px'"
@@ -55,6 +61,20 @@
         {{ link.label }}
       </a>
 
+      <div class="nav-more" [class.active]="isOnMorePage">
+        <button
+          #moreBtn
+          type="button"
+          class="nav-link nav-more-btn"
+          (click)="toggleMore($event)"
+          [attr.aria-expanded]="isMoreOpen"
+          aria-haspopup="true"
+        >
+          More
+          <i class="fa-solid fa-chevron-down nav-more-caret" [class.open]="isMoreOpen" aria-hidden="true"></i>
+        </button>
+      </div>
+
       <div class="nav-divider" aria-hidden="true"></div>
 
       <div class="theme-guide-anchor">
@@ -82,6 +102,23 @@
         <span>Book a Call</span>
       </a>
     </nav>
+
+    <div
+      *ngIf="isMoreOpen"
+      class="nav-more-dropdown"
+      [style.top.px]="moreDropdownTop"
+      [style.left.px]="moreDropdownLeft"
+      (click)="$event.stopPropagation()"
+    >
+      <a
+        *ngFor="let item of moreLinks"
+        [routerLink]="item.path"
+        class="nav-more-item"
+        (click)="closeMore()"
+      >
+        <i [class]="item.icon" aria-hidden="true"></i> {{ item.label }}
+      </a>
+    </div>
 
     <button class="cmd-btn" type="button" (click)="openPalette()" aria-label="Open command palette">
       <span class="cmd-btn-glow"></span>
@@ -118,6 +155,20 @@
             {{ link.label }}
           </a>
         </nav>
+
+        <div class="mobile-drawer__divider"></div>
+
+        <p class="mobile-drawer__group-label">More</p>
+        <a
+          *ngFor="let item of moreLinks"
+          class="mobile-drawer__link"
+          [class.active]="isMoreLinkActive(item.path)"
+          [routerLink]="item.path"
+          (click)="closeMenu()"
+        >
+          <i [class]="item.icon + ' mobile-drawer__icon'"></i>
+          {{ item.label }}
+        </a>
 
         <div class="mobile-drawer__divider"></div>
 
