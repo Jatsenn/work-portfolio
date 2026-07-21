@@ -2,7 +2,7 @@
 
 Goal: let a recruiter visiting the portfolio open a chat widget and ask questions about Jatsen (experience, skills, projects, certifications, availability) and get accurate, grounded answers. The assistant must **not** turn into a general-purpose chatbot — it only knows and discusses Jatsen's professional background.
 
-Status: **frontend widget + backend function both built.** Pending: create the Vercel project, set env vars, deploy, and host the Angular static build on Hostinger.
+Status: **frontend widget + backend function both built.** Pending: create the Vercel project, set env vars, deploy, and host the Angular static build on Hostinger. For the actual step-by-step of what was built and every problem hit along the way, see [`ai-chat-assistant-setup.md`](./ai-chat-assistant-setup.md).
 
 **Split hosting:** the Angular UI deploys to **Hostinger** (static files); `/api/chat` deploys to **Vercel** (serverless function only, same repo). They're on different origins, so the backend enforces CORS via an `ALLOWED_ORIGIN` env var, and the frontend calls the API's full URL via `environment.apiBaseUrl` rather than a relative path. Kept as one repo (not split into two) because the function reads `HOME_CONTENT` directly from `src/app/features/home/data/home-content.ts` — a second repo would mean manually duplicating and syncing resume/project data, which risks the assistant giving stale answers.
 

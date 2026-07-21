@@ -8,15 +8,17 @@
     [attr.aria-expanded]="isOpen"
     aria-label="Chat with Jatsen's AI assistant"
   >
+    <span class="ai-chat__fab-glow" aria-hidden="true"></span>
     <i class="fa-solid fa-comment-dots" *ngIf="!isOpen" aria-hidden="true"></i>
     <i class="fa-solid fa-xmark" *ngIf="isOpen" aria-hidden="true"></i>
   </button>
 
   <div class="ai-chat__panel" *ngIf="isOpen" role="dialog" aria-label="Ask about Jatsen">
     <header class="ai-chat__header">
+      <img class="ai-chat__avatar" src="assets/images/ai-assisted-picture.jpeg" alt="" aria-hidden="true" />
       <div class="ai-chat__title">
-        <span class="ai-chat__title-main">Ask about Jatsen</span>
-        <span class="ai-chat__title-sub">AI assistant · may be imperfect</span>
+        <span class="ai-chat__title-main">Ask about Jat</span>
+        <span class="ai-chat__title-sub"><span class="ai-chat__status-dot"></span>AI assistant · online</span>
       </div>
       <button type="button" class="ai-chat__close" (click)="closePanel()" aria-label="Close chat">
         <i class="fa-solid fa-xmark" aria-hidden="true"></i>
@@ -25,7 +27,7 @@
 
     <div class="ai-chat__messages" #messageList aria-live="polite">
       <div class="ai-chat__empty" *ngIf="!messages.length">
-        <p>Ask me anything about Jatsen's experience, skills, or projects.</p>
+        <p>Ask me anything about Jat's experience, skills, or projects.</p>
         <div class="ai-chat__starters">
           <button
             type="button"
@@ -33,24 +35,34 @@
             *ngFor="let prompt of starterPrompts"
             (click)="useStarterPrompt(prompt)"
           >
-            {{ prompt }}
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+            <span>{{ prompt }}</span>
           </button>
         </div>
       </div>
 
       <div
-        class="ai-chat__bubble"
+        class="ai-chat__row"
         *ngFor="let message of messages"
-        [class.ai-chat__bubble--user]="message.role === 'user'"
-        [class.ai-chat__bubble--assistant]="message.role === 'assistant'"
+        [class.ai-chat__row--user]="message.role === 'user'"
       >
-        {{ message.content }}
+        <img class="ai-chat__avatar ai-chat__avatar--sm" *ngIf="message.role === 'assistant'" src="assets/images/ai-assisted-picture.jpeg" alt="" aria-hidden="true" />
+        <div
+          class="ai-chat__bubble"
+          [class.ai-chat__bubble--user]="message.role === 'user'"
+          [class.ai-chat__bubble--assistant]="message.role === 'assistant'"
+        >
+          {{ message.content }}
+        </div>
       </div>
 
-      <div class="ai-chat__bubble ai-chat__bubble--assistant ai-chat__bubble--loading" *ngIf="isLoading">
-        <span class="ai-chat__dot"></span>
-        <span class="ai-chat__dot"></span>
-        <span class="ai-chat__dot"></span>
+      <div class="ai-chat__row" *ngIf="isLoading">
+        <img class="ai-chat__avatar ai-chat__avatar--sm" src="assets/images/ai-assisted-picture.jpeg" alt="" aria-hidden="true" />
+        <div class="ai-chat__bubble ai-chat__bubble--assistant ai-chat__bubble--loading">
+          <span class="ai-chat__dot"></span>
+          <span class="ai-chat__dot"></span>
+          <span class="ai-chat__dot"></span>
+        </div>
       </div>
     </div>
 

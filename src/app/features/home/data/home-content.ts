@@ -110,35 +110,6 @@ export const HOME_CONTENT: PortfolioContent = {
   ],
   projects: [
     {
-      id: 'frost-and-grounds',
-      name: 'Frost and Grounds Website',
-      category: 'Web App',
-      stack: 'Frontend Application',
-      summary: 'Working deployed web application for Frost and Grounds with modern UI and production-ready flow.',
-      liveUrl: 'https://v0-frost-and-grounds-website-phi.vercel.app/',
-      githubUrl: 'https://github.com/jatsengesta/frost-and-grounds',
-      date: 'Q1 2025',
-      tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Vercel'],
-      role: 'Frontend Developer',
-      timeline: { started: 'Jan 2025', shipped: 'Mar 2025' },
-      mockupType: 'browser-mobile',
-      previewImage: 'assets/images/frost-and-grounds.png',
-      sections: [
-        {
-          heading: 'Why I Built This',
-          body: 'Frost and Grounds needed a modern, fast-loading website that reflected their brand identity. I wanted to build something that felt premium and was easy to maintain — so I chose Next.js for its performance and Tailwind CSS for rapid, consistent styling.',
-        },
-        {
-          heading: 'How It Works',
-          body: 'The site is a static Next.js application deployed on Vercel. Pages are server-rendered for fast initial load, and Tailwind CSS handles all styling with a custom design system. The layout is fully responsive and optimized for mobile-first browsing.',
-        },
-        {
-          heading: 'How to Use',
-          body: 'Visit the live site to explore the menu, learn about the brand, and find location details. The site is designed to be intuitive — just browse and enjoy the experience.',
-        },
-      ],
-    },
-    {
       id: 'pet-bottle-points',
       name: 'PET Bottle to Points System',
       category: 'Web App',
