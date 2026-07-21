@@ -171,6 +171,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse): 
     });
 
     if (!geminiResponse.ok) {
+      const errorBody = await geminiResponse.text();
+      console.error(`Gemini API error ${geminiResponse.status}: ${errorBody}`);
       res.status(502).json({ error: 'Assistant is temporarily unavailable.' });
       return;
     }
