@@ -402,9 +402,10 @@
   <button *ngIf="showBackToTop" class="to-top" type="button" (click)="scrollTop()" aria-label="Back to top">
     ↑
   </button>
+</main>
 
-  <div
-    class="lightbox-backdrop"
+<div
+  class="lightbox-backdrop"
     *ngIf="activeLightboxCard as photo"
     (click)="closeLightbox()"
     role="dialog"
@@ -435,5 +436,3 @@
       <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
     </button>
   </div>
-
-</main>
