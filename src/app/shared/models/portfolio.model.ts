@@ -5,6 +5,14 @@ export interface ContactInfo {
   location: string;
 }
 
+export interface AvailabilityInfo {
+  status: string;
+  workTypes: string[];
+  workMode: string;
+  responseTime: string;
+  freelanceNote: string;
+}
+
 export interface HeroContent {
   badge: string;
   titleLead: string;
@@ -100,6 +108,7 @@ export interface PortfolioContent {
   fullName: string;
   role: string;
   contact: ContactInfo;
+  availability: AvailabilityInfo;
   hero: HeroContent;
   about: AboutContent;
   services: ServiceItem[];

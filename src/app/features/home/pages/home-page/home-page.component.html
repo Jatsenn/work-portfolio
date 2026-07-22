@@ -19,18 +19,30 @@
       <div class="avail-card" [class.open]="availCardOpen">
         <div class="avail-card__header">
           <span class="avail-card__dot" aria-hidden="true"></span>
-          <span class="avail-card__status">Open to opportunities</span>
+          <span class="avail-card__status">{{ content.availability.status }}</span>
         </div>
         <div class="avail-card__rows">
-          <div class="avail-card__row"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><span>Freelance &amp; Full-time roles</span></div>
-          <div class="avail-card__row"><i class="fa-solid fa-earth-asia" aria-hidden="true"></i><span>Remote / Hybrid</span></div>
-          <div class="avail-card__row"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>Responds within 24 hrs</span></div>
+          <div class="avail-card__row"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><span>{{ content.availability.workTypes.join(' & ') }} roles</span></div>
+          <div class="avail-card__row"><i class="fa-solid fa-earth-asia" aria-hidden="true"></i><span>{{ content.availability.workMode }}</span></div>
+          <div class="avail-card__row"><i class="fa-solid fa-bolt" aria-hidden="true"></i><span>{{ content.availability.responseTime }}</span></div>
         </div>
         <div class="avail-card__actions">
           <button class="avail-card__copy" type="button" (click)="copyEmail()">
             <i class="fa-solid" [class.fa-copy]="!emailCopied" [class.fa-check]="emailCopied" aria-hidden="true"></i>
             <span>{{ emailCopied ? 'Email copied!' : 'Copy email' }}</span>
           </button>
+          <button class="avail-card__copy" type="button" (click)="copyNumber()">
+            <i class="fa-solid" [class.fa-copy]="!numberCopied" [class.fa-check]="numberCopied" aria-hidden="true"></i>
+            <span>{{ numberCopied ? 'Number copied!' : 'Copy number' }}</span>
+          </button>
+          <a
+            class="avail-card__copy"
+            href="assets/Gesta-Jatsen-Resume-2026.pdf"
+            download="Jatsen-Gesta-Resume.pdf"
+          >
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            <span>Download Resume</span>
+          </a>
           <a class="avail-card__book" routerLink="/book-call" (click)="availCardOpen = false">
             <i class="fa-regular fa-calendar" aria-hidden="true"></i>
             <span>Book a Call</span>

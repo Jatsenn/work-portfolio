@@ -57,6 +57,7 @@ function buildAssistantContext() {
     fullName: c.fullName,
     role: c.role,
     contact: c.contact,
+    availability: c.availability,
     summary: c.hero.summary,
     about: c.about,
     services: c.services,

@@ -79,7 +79,9 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
 
   availCardOpen = false;
   emailCopied = false;
+  numberCopied = false;
   private emailCopyTimer: ReturnType<typeof setTimeout> | null = null;
+  private numberCopyTimer: ReturnType<typeof setTimeout> | null = null;
 
   toggleAvailCard(): void {
     this.availCardOpen = !this.availCardOpen;
@@ -92,6 +94,19 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
       if (this.emailCopyTimer) clearTimeout(this.emailCopyTimer);
       this.emailCopyTimer = setTimeout(() => {
         this.emailCopied = false;
+        this.availCardOpen = false;
+        this.cdr.markForCheck();
+      }, 2000);
+    });
+  }
+
+  copyNumber(): void {
+    navigator.clipboard.writeText(this.content.contact.phone).then(() => {
+      this.numberCopied = true;
+      this.cdr.markForCheck();
+      if (this.numberCopyTimer) clearTimeout(this.numberCopyTimer);
+      this.numberCopyTimer = setTimeout(() => {
+        this.numberCopied = false;
         this.availCardOpen = false;
         this.cdr.markForCheck();
       }, 2000);
@@ -423,7 +438,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   private projectPreviewEls: HTMLElement[] = [];
 
   private updateProjectParallax(): void {
-    if (this.prefersReducedMotion || !this.projectPreviewEls.length) return;
+    if (this.prefersReducedMotion || !this.supportsHover || !this.projectPreviewEls.length) return;
 
     const viewportH = window.innerHeight;
     this.projectPreviewEls.forEach((img) => {

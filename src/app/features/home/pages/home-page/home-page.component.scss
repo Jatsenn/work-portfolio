@@ -303,7 +303,7 @@
   top: calc(100% + 12px);
   left: 50%;
   translate: -50% 0;
-  width: 260px;
+  width: 280px;
   background: color-mix(in oklab, var(--color-surface), transparent 5%);
   border: 1px solid var(--card-border);
   border-radius: 18px;
@@ -368,52 +368,56 @@
 }
 
 .avail-card__actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
   padding-top: 12px;
   border-top: 1px solid var(--card-border);
 }
 
 .avail-card__copy {
-  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 9px 12px;
+  padding: 9px 10px;
   border-radius: 10px;
   border: 1px solid var(--card-border);
   background: color-mix(in oklab, var(--color-surface), transparent 10%);
   color: var(--color-text);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
+  text-decoration: none;
   cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.avail-card__copy:hover {
-  border-color: var(--glow-violet);
-  background: color-mix(in oklab, var(--color-surface), var(--glow-violet) 6%);
+@media (hover: hover) {
+  .avail-card__copy:hover {
+    border-color: var(--glow-violet);
+    background: color-mix(in oklab, var(--color-surface), var(--glow-violet) 6%);
+  }
 }
 
 .avail-card__book {
-  flex: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 9px 12px;
+  padding: 9px 10px;
   border-radius: 10px;
   background: var(--color-text);
   color: var(--color-bg);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
 
-.avail-card__book:hover {
-  opacity: 0.85;
+@media (hover: hover) {
+  .avail-card__book:hover {
+    opacity: 0.85;
+  }
 }
 
 .hero-pill:hover {
@@ -2347,11 +2351,20 @@ h3 {
   object-fit: cover;
   display: block;
   transform: scale(1.08);
-  transition: transform 0.08s linear;
-  will-change: transform;
   -webkit-user-drag: none;
   -webkit-touch-callout: none;
   user-select: none;
+}
+
+/* Scroll-driven parallax only runs on pointer-capable devices (see
+   updateProjectParallax) — the transition/will-change are only useful
+   there, and forcing a compositing layer on touch has caused hit-testing
+   glitches on iOS Safari where taps on the image don't reach the link. */
+@media (hover: hover) {
+  .curated-preview-img {
+    transition: transform 0.08s linear;
+    will-change: transform;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

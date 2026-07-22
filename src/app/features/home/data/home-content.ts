@@ -9,6 +9,13 @@ export const HOME_CONTENT: PortfolioContent = {
     linkedin: 'linkedin.com/in/jatsengesta',
     location: 'Trece Martires, Cavite, Philippines',
   },
+  availability: {
+    status: 'Open to opportunities',
+    workTypes: ['Freelance', 'Full-time'],
+    workMode: 'Remote / Hybrid',
+    responseTime: 'Responds within 24 hrs',
+    freelanceNote: 'Jat is open to freelance work — he\'s positive about it and welcomes freelance projects alongside full-time roles.',
+  },
   hero: {
     badge: 'I Build Reliable Full-Stack Solutions',
     titleLead: 'Software Engineer with',
