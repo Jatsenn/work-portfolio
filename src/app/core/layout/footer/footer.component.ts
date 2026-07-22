@@ -23,6 +23,7 @@ export class FooterComponent implements OnDestroy {
 
   interactive = true;
   private prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+  private readonly supportsHover = window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches ?? true;
 
   orbMx = '50%';
   orbMy = '35%';
@@ -102,7 +103,7 @@ export class FooterComponent implements OnDestroy {
   }
 
   onMouseMove(event: MouseEvent): void {
-    if (!this.interactive || this.prefersReducedMotion) return;
+    if (!this.interactive || this.prefersReducedMotion || !this.supportsHover) return;
     const target = event.currentTarget as HTMLElement | null;
     if (!target) return;
     const rect = target.getBoundingClientRect();

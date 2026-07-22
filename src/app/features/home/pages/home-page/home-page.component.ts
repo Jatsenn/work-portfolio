@@ -75,6 +75,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   ];
 
   private readonly prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ?? false;
+  private readonly supportsHover = window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches ?? true;
 
   availCardOpen = false;
   emailCopied = false;
@@ -352,6 +353,8 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
+    if (!this.supportsHover) return;
+
     const main = document.getElementById('home');
     if (!main) return;
 

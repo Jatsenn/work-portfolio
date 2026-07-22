@@ -1224,11 +1224,18 @@ h3 {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.reel-card:hover,
 .reel-card:focus-visible {
   transform: translateY(-4px);
   box-shadow: 0 24px 48px color-mix(in oklab, var(--color-text), transparent 88%);
   outline: none;
+}
+
+@media (hover: hover) {
+  .reel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px color-mix(in oklab, var(--color-text), transparent 88%);
+    outline: none;
+  }
 }
 
 .reel-card img {
@@ -1264,12 +1271,21 @@ h3 {
   color: #fff;
   font-size: 0.9rem;
   transition: transform 0.2s ease, background-color 0.2s ease;
+  /* Decorative only (aria-hidden) — never let this sit between a tap and
+     the card's own click handler. */
+  pointer-events: none;
 }
 
-.reel-card:hover .reel-card-play,
 .reel-card:focus-visible .reel-card-play {
   transform: translate(-50%, -50%) scale(1.1);
   background: rgba(255, 255, 255, 0.26);
+}
+
+@media (hover: hover) {
+  .reel-card:hover .reel-card-play {
+    transform: translate(-50%, -50%) scale(1.1);
+    background: rgba(255, 255, 255, 0.26);
+  }
 }
 
 .reel-card-label {
@@ -2086,6 +2102,16 @@ h3 {
 
 .project-cursor.visible {
   opacity: 1;
+}
+
+/* Touch devices synthesize a hover/mousemove on tap, which can leave this
+   cursor badge stuck visible over the tapped card since there's no real
+   mouse to move it away. It only makes sense for a real pointer, so hide
+   it entirely on touch/no-hover devices. */
+@media (hover: none), (pointer: coarse) {
+  .project-cursor {
+    display: none !important;
+  }
 }
 
 .project-cursor-svg {
