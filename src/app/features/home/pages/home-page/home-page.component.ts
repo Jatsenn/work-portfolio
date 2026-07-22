@@ -210,6 +210,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   isDark = false;
 
   private observer?: IntersectionObserver;
+  private globeVisibilityObserver?: IntersectionObserver;
   private globeRafId: number | null = null;
   private lastGlobeFrameMs = 0;
   private globeResizeObserver?: ResizeObserver;
@@ -361,20 +362,18 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
       projectCursorEl.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
       projectCursorEl.classList.toggle('visible', !!onProjectCard);
     }
-
-    // Per-card local spotlight
-    const card = (event.target as HTMLElement)?.closest('.surface-card') as HTMLElement | null;
-    if (card) {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty('--cx', `${event.clientX - rect.left}px`);
-      card.style.setProperty('--cy', `${event.clientY - rect.top}px`);
-    }
   }
+
+  private scrollRafId: number | null = null;
 
   @HostListener('window:scroll')
   onWindowScroll(): void {
-    this.updateTimelineFill();
-    this.updateProjectParallax();
+    if (this.scrollRafId !== null) return;
+    this.scrollRafId = requestAnimationFrame(() => {
+      this.scrollRafId = null;
+      this.updateTimelineFill();
+      this.updateProjectParallax();
+    });
   }
 
   revealDelay(index: number): number {
@@ -449,6 +448,19 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     this.updateGlobeItems();
     this.initThreeGlobe();
     this.startGlobeAutoRotate();
+
+    const globeEl = this.globeCanvas?.nativeElement.parentElement;
+    if (globeEl) {
+      this.globeVisibilityObserver = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          if (this.globeRafId === null) this.startGlobeAutoRotate();
+        } else {
+          this.pauseGlobeAutoRotate();
+        }
+      });
+      this.globeVisibilityObserver.observe(globeEl);
+    }
+
     setTimeout(() => {
       this.updateTimelineFill();
       if (this.resumeTimeline?.nativeElement) {
@@ -465,9 +477,11 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.observer?.disconnect();
-    if (this.globeRafId !== null) cancelAnimationFrame(this.globeRafId);
+    this.globeVisibilityObserver?.disconnect();
+    this.pauseGlobeAutoRotate();
     if (this.shootingStarsRafId !== null) cancelAnimationFrame(this.shootingStarsRafId);
     if (this.reelArrowsRaf !== null) cancelAnimationFrame(this.reelArrowsRaf);
+    if (this.scrollRafId !== null) cancelAnimationFrame(this.scrollRafId);
     this.reelResizeObserver?.disconnect();
     this.globeResizeObserver?.disconnect();
     this.globeThree?.dispose();
@@ -819,6 +833,13 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     };
 
     this.globeRafId = requestAnimationFrame(tick);
+  }
+
+  private pauseGlobeAutoRotate(): void {
+    if (this.globeRafId !== null) {
+      cancelAnimationFrame(this.globeRafId);
+      this.globeRafId = null;
+    }
   }
 
   private initThreeGlobe(): void {

@@ -13,6 +13,7 @@ export class CursorComponent implements OnInit, OnDestroy {
   private ringX = 0;
   private ringY = 0;
   private rafId: number | null = null;
+  private readonly supportsHover = window.matchMedia?.('(hover: hover) and (pointer: fine)')?.matches ?? true;
 
   @ViewChild('cursorDot', { static: true })
   cursorDot!: ElementRef<HTMLElement>;
@@ -21,11 +22,13 @@ export class CursorComponent implements OnInit, OnDestroy {
   cursorRing!: ElementRef<HTMLElement>;
 
   ngOnInit(): void {
-    this.startRingLoop();
+    if (this.supportsHover) this.startRingLoop();
   }
 
   @HostListener('window:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
+    if (!this.supportsHover) return;
+
     this.mouseX = event.clientX;
     this.mouseY = event.clientY;
 

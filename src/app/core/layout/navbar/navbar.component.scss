@@ -779,7 +779,10 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 14px 6px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .menu-toggle-name {
@@ -791,8 +794,8 @@
 }
 
 .menu-toggle {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   border: none;
   background: color-mix(in oklab, var(--color-bg), transparent 85%);
@@ -933,12 +936,12 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  padding: 0;
+  padding: 8px 4px;
 }
 
 .mobile-drawer__theme {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid var(--color-border);
   background: color-mix(in oklab, var(--color-text), transparent 90%);
