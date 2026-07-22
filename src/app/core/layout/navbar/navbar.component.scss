@@ -122,8 +122,10 @@
   white-space: nowrap;
 }
 
-.nav-link:hover {
-  background: color-mix(in oklab, var(--color-text), transparent 80%);
+@media (hover: hover) {
+  .nav-link:hover {
+    background: color-mix(in oklab, var(--color-text), transparent 80%);
+  }
 }
 
 .nav-link.active {
@@ -198,8 +200,10 @@
     text-align: center;
   }
 
-  &:hover {
-    background: color-mix(in oklab, var(--color-text), transparent 92%);
+  @media (hover: hover) {
+    &:hover {
+      background: color-mix(in oklab, var(--color-text), transparent 92%);
+    }
   }
 }
 
@@ -230,9 +234,11 @@
   flex-shrink: 0;
 }
 
-.nav-theme-toggle:hover {
-  color: var(--color-bg);
-  background: color-mix(in oklab, var(--color-bg), transparent 85%);
+@media (hover: hover) {
+  .nav-theme-toggle:hover {
+    color: var(--color-bg);
+    background: color-mix(in oklab, var(--color-bg), transparent 85%);
+  }
 }
 
 .nav-theme-toggle:focus-visible {
@@ -339,8 +345,10 @@
     0 0 40px rgba(139, 92, 246, 0.2);
 }
 
-.btn-call:hover {
-  opacity: 0.85;
+@media (hover: hover) {
+  .btn-call:hover {
+    opacity: 0.85;
+  }
 }
 
 .btn-call:focus-visible {
@@ -456,17 +464,19 @@
   transition: background 0.2s ease;
 }
 
-.cmd-btn:hover {
-  background: color-mix(in oklab, var(--color-text), transparent 52%);
-  border-color: transparent;
-  box-shadow:
-    0 0 12px rgba(167, 139, 250, 0.5),
-    0 0 28px rgba(139, 92, 246, 0.3),
-    0 0 48px rgba(236, 72, 153, 0.15);
-}
+@media (hover: hover) {
+  .cmd-btn:hover {
+    background: color-mix(in oklab, var(--color-text), transparent 52%);
+    border-color: transparent;
+    box-shadow:
+      0 0 12px rgba(167, 139, 250, 0.5),
+      0 0 28px rgba(139, 92, 246, 0.3),
+      0 0 48px rgba(236, 72, 153, 0.15);
+  }
 
-.cmd-btn:hover::after {
-  background: color-mix(in oklab, var(--color-text), transparent 52%);
+  .cmd-btn:hover::after {
+    background: color-mix(in oklab, var(--color-text), transparent 52%);
+  }
 }
 
 @keyframes cmd-orb-spin {
@@ -720,8 +730,10 @@
   color: var(--color-text);
 }
 
-.theme-choice:hover {
-  border-color: var(--color-text);
+@media (hover: hover) {
+  .theme-choice:hover {
+    border-color: var(--color-text);
+  }
 }
 
 .theme-skip {
@@ -761,6 +773,9 @@
   object-fit: cover;
   display: block;
   flex-shrink: 0;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
 }
 
 .menu-toggle-divider {
@@ -808,8 +823,10 @@
   flex-shrink: 0;
 }
 
-.menu-toggle:hover {
-  background: color-mix(in oklab, var(--color-bg), transparent 75%);
+@media (hover: hover) {
+  .menu-toggle:hover {
+    background: color-mix(in oklab, var(--color-bg), transparent 75%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -962,8 +979,10 @@
   transition: background 0.15s ease;
 }
 
-.mobile-drawer__theme:hover {
-  background: color-mix(in oklab, var(--color-text), transparent 82%);
+@media (hover: hover) {
+  .mobile-drawer__theme:hover {
+    background: color-mix(in oklab, var(--color-text), transparent 82%);
+  }
 }
 
 .mobile-drawer__nav {
@@ -991,9 +1010,14 @@
   cursor: pointer;
 }
 
-.mobile-drawer__link:hover,
 .mobile-drawer__link.active {
   background: color-mix(in oklab, var(--color-text), transparent 88%);
+}
+
+@media (hover: hover) {
+  .mobile-drawer__link:hover {
+    background: color-mix(in oklab, var(--color-text), transparent 88%);
+  }
 }
 
 .mobile-drawer__icon {

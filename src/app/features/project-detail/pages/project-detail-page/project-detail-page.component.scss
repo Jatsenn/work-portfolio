@@ -49,9 +49,11 @@
   margin-bottom: 32px;
   transition: color 0.2s ease, gap 0.2s ease;
 
-  &:hover {
-    color: var(--color-text);
-    gap: 12px;
+  @media (hover: hover) {
+    &:hover {
+      color: var(--color-text);
+      gap: 12px;
+    }
   }
 }
 
@@ -326,20 +328,26 @@
   text-decoration: none;
   transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 
-  &:hover { transform: translateY(-2px); }
+  @media (hover: hover) {
+    &:hover { transform: translateY(-2px); }
+  }
 
   &--primary {
     background: var(--color-text);
     color: var(--color-page, #0c0c12);
     box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-    &:hover { box-shadow: 0 14px 32px rgba(0,0,0,0.3); }
+    @media (hover: hover) {
+      &:hover { box-shadow: 0 14px 32px rgba(0,0,0,0.3); }
+    }
   }
 
   &--ghost {
     border: 1px solid var(--color-border, rgba(255,255,255,0.08));
     color: var(--color-text);
     background: transparent;
-    &:hover { border-color: var(--glow-violet, #7c6fff); box-shadow: 0 8px 24px rgba(124,111,255,0.15); }
+    @media (hover: hover) {
+      &:hover { border-color: var(--glow-violet, #7c6fff); box-shadow: 0 8px 24px rgba(124,111,255,0.15); }
+    }
   }
 }
 
@@ -449,11 +457,13 @@
   text-decoration: none;
   transition: gap 0.2s ease;
 
-  &:hover {
-    gap: 10px;
+  @media (hover: hover) {
+    &:hover {
+      gap: 10px;
 
-    .pd-next-name i {
-      transform: translateX(4px);
+      .pd-next-name i {
+        transform: translateX(4px);
+      }
     }
   }
 }

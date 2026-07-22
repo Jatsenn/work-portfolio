@@ -99,12 +99,23 @@
     rotateY(var(--orb-ry, 0deg))
     scale(var(--orb-s, 1));
   transform-origin: center;
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, opacity 0.22s ease;
-  will-change: transform;
+  transition: box-shadow 0.22s ease, opacity 0.22s ease;
   animation: footerOrbFloat 6.5s ease-in-out infinite;
   display: grid;
   place-items: center;
   position: relative;
+}
+
+/* The mouse-tilt effect (--orb-dx/dy/rx/ry/s) only runs on hover-capable
+   devices (see supportsHover in footer.component.ts) — will-change and a
+   transform transition are only useful there, and forcing a compositing
+   layer on touch has caused iOS Safari hit-testing glitches elsewhere in
+   this app where taps on the element don't register. */
+@media (hover: hover) {
+  .footer-orb {
+    transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.22s ease, opacity 0.22s ease;
+    will-change: transform;
+  }
 }
 
 .footer-orb .bubble-icon {
@@ -335,10 +346,12 @@
   color: rgba(134, 160, 255, 0.95);
 }
 
-.footer-contact__item:hover {
-  transform: translateY(-2px);
-  border-color: rgba(134, 160, 255, 0.35);
-  box-shadow: 0 18px 44px color-mix(in oklab, var(--color-text), transparent 92%);
+@media (hover: hover) {
+  .footer-contact__item:hover {
+    transform: translateY(-2px);
+    border-color: rgba(134, 160, 255, 0.35);
+    box-shadow: 0 18px 44px color-mix(in oklab, var(--color-text), transparent 92%);
+  }
 }
 
 .footer-cols {
@@ -367,9 +380,11 @@
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.footer-link:hover {
-  color: var(--color-text);
-  transform: translateX(2px);
+@media (hover: hover) {
+  .footer-link:hover {
+    color: var(--color-text);
+    transform: translateX(2px);
+  }
 }
 
 .footer-bottom {
@@ -418,11 +433,13 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.footer-socials a:hover {
-  transform: translateY(-2px);
-  border-color: rgba(134, 160, 255, 0.35);
-  box-shadow: 0 18px 44px color-mix(in oklab, var(--color-text), transparent 92%);
-  background: color-mix(in oklab, var(--color-surface), transparent 8%);
+@media (hover: hover) {
+  .footer-socials a:hover {
+    transform: translateY(-2px);
+    border-color: rgba(134, 160, 255, 0.35);
+    box-shadow: 0 18px 44px color-mix(in oklab, var(--color-text), transparent 92%);
+    background: color-mix(in oklab, var(--color-surface), transparent 8%);
+  }
 }
 
 .footer-socials a:focus-visible {

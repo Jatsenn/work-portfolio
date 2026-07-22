@@ -136,7 +136,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.applyTheme();
     this.showThemePrompt = !localStorage.getItem(this.themePromptSeenKey);
     this.activeLinkId = window.location.hash?.replace('#', '') || 'home';
-    if (!window.location.hash) history.replaceState(null, '', '#home');
+    // Use an absolute, root-relative URL here (not a bare '#home' fragment) —
+    // with <base href="/"> in index.html, the browser resolves a fragment-only
+    // history.replaceState URL against that base rather than the current
+    // path, which silently rewrote any non-home route (e.g. /book-call) back
+    // to '/' on a fresh load. Only touch the hash when actually on the home
+    // route, where this default hash is meaningful.
+    if (window.location.pathname === '/' && !window.location.hash) {
+      history.replaceState(null, '', '/#home');
+    }
 
     window.addEventListener('hashchange', this.onHashChange, { passive: true });
     window.addEventListener('resize', this.onResize, { passive: true });
@@ -255,7 +263,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.scrollToSection(sectionId);
-    history.replaceState(null, '', `#${sectionId}`);
+    history.replaceState(null, '', `/#${sectionId}`);
   }
 
   private scrollToSection(sectionId: string): void {
@@ -268,7 +276,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({ top: Math.max(top, 0), behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-    history.replaceState(null, '', `#${sectionId}`);
+    history.replaceState(null, '', `/#${sectionId}`);
   }
 
   onNavHover(sectionId: string): void {

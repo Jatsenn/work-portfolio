@@ -89,9 +89,11 @@
   box-shadow: 0 8px 28px color-mix(in oklab, var(--color-text), transparent 75%);
 }
 
-.bc-btn--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 40px color-mix(in oklab, var(--color-text), transparent 65%);
+@media (hover: hover) {
+  .bc-btn--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 40px color-mix(in oklab, var(--color-text), transparent 65%);
+  }
 }
 
 .bc-btn--secondary {
@@ -100,9 +102,11 @@
   border: 1px solid var(--color-border);
 }
 
-.bc-btn--secondary:hover {
-  transform: translateY(-2px);
-  border-color: var(--color-text);
+@media (hover: hover) {
+  .bc-btn--secondary:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-text);
+  }
 }
 
 .bc-btn:disabled {
@@ -215,9 +219,11 @@ form { display: flex; flex-direction: column; gap: 18px; }
   box-shadow: 0 8px 28px color-mix(in oklab, var(--color-text), transparent 75%);
 }
 
-.bc-submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 40px color-mix(in oklab, var(--color-text), transparent 65%);
+@media (hover: hover) {
+  .bc-submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 40px color-mix(in oklab, var(--color-text), transparent 65%);
+  }
 }
 
 .bc-submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
