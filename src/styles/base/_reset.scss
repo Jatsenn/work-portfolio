@@ -20,18 +20,3 @@ body {
   }
 }
 
-/* Touch devices: CSS transitions/animations tied to :hover or :active can
-   read as lag, and on iOS Safari a transitioning hover/active state can be
-   part of why a tap gets treated as a hover preview instead of a click.
-   Make everything instant on touch; desktop keeps its animations. */
-@media (hover: none), (pointer: coarse) {
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.001ms !important;
-    transition-delay: 0s !important;
-    animation-duration: 0.001ms !important;
-    animation-delay: 0s !important;
-    scroll-behavior: auto !important;
-  }
-}
