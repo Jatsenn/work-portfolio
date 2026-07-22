@@ -222,10 +222,14 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
     dispose: () => void;
   };
 
+  private globeRadiusScale = 1;
   private isDraggingGlobe = false;
   private globePointerId: number | null = null;
   private lastPointerX = 0;
   private lastPointerY = 0;
+  private globeDragStartX = 0;
+  private globeDragStartY = 0;
+  private readonly globeDragThresholdPx = 6;
   private globeRotY = 0;
   private globeRotX = -0.2;
   private globeVelY = 0;
@@ -492,22 +496,28 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   }
 
   onGlobePointerDown(event: PointerEvent): void {
-    const target = event.currentTarget as HTMLElement | null;
-    if (!target) {
-      return;
-    }
-
-    this.isDraggingGlobe = true;
     this.globePointerId = event.pointerId;
     this.lastPointerX = event.clientX;
     this.lastPointerY = event.clientY;
-    target.setPointerCapture(event.pointerId);
-    this.globeActiveLabel = '';
+    this.globeDragStartX = event.clientX;
+    this.globeDragStartY = event.clientY;
+    this.isDraggingGlobe = false;
   }
 
   onGlobePointerMove(event: PointerEvent): void {
-    if (!this.isDraggingGlobe || this.globePointerId !== event.pointerId) {
+    if (this.globePointerId !== event.pointerId) {
       return;
+    }
+
+    if (!this.isDraggingGlobe) {
+      const dx0 = event.clientX - this.globeDragStartX;
+      const dy0 = event.clientY - this.globeDragStartY;
+      if (Math.hypot(dx0, dy0) < this.globeDragThresholdPx) {
+        return;
+      }
+      this.isDraggingGlobe = true;
+      this.globeActiveLabel = '';
+      (event.currentTarget as HTMLElement | null)?.setPointerCapture(event.pointerId);
     }
 
     const nowMs = performance.now();
@@ -569,7 +579,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateGlobeItems(): void {
-    const radius = 196;
+    const radius = 196 * this.globeRadiusScale;
     const size = 56;
 
     this.globeRotationCss = `${this.globeRotY.toFixed(4)}rad`;
@@ -583,7 +593,7 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
       const depth = (z3 + radius) / (2 * radius);
       const isFront = z3 > 0;
 
-      const perspective = 520;
+      const perspective = 520 * this.globeRadiusScale;
       const persp = perspective / (perspective - z3);
       const x = x3 * persp;
       const y = y3 * persp;
@@ -909,6 +919,12 @@ export class HomePageComponent implements AfterViewInit, OnDestroy {
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
+
+      // Skill bubbles orbit at a radius tuned for the max (desktop) container
+      // width; scale it down for narrower containers so bubbles stay inside
+      // the circular mask instead of being clipped off-screen.
+      this.globeRadiusScale = w / 520;
+      this.updateGlobeItems();
     };
 
     resize();
