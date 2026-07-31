@@ -170,6 +170,34 @@ export const HOME_CONTENT: PortfolioContent = {
         },
       ],
     },
+    {
+      id: 'textcompare',
+      name: 'TextCompare',
+      category: 'Web App',
+      stack: 'React + TypeScript',
+      summary: 'A modern, privacy-first text comparison app with real-time, word-level diff highlighting — everything runs entirely in the browser, no backend, no tracking.',
+      liveUrl: 'https://textcomparepro.online/',
+      date: 'Q3 2026',
+      tags: ['React', 'TypeScript', 'Vite', 'Tailwind CSS'],
+      role: 'Frontend Developer',
+      timeline: { started: 'Jul 2026', shipped: 'Jul 2026' },
+      mockupType: 'browser-mobile',
+      previewImage: 'assets/images/textcompare.png',
+      sections: [
+        {
+          heading: 'Why I Built This',
+          body: 'Existing diff tools either require uploading text to a server or bury the comparison behind a clunky UI. TextCompare keeps everything client-side — nothing is ever sent or persisted — while making differences easy to scan at a glance.',
+        },
+        {
+          heading: 'How It Works',
+          body: 'Dual Monaco editors power the live compare view, with a diffing engine highlighting word-level changes in real time. A side-by-side diff view adds scroll synchronization and difference navigation, plus options to ignore whitespace or case, a statistics summary, search, and file drag-and-drop.',
+        },
+        {
+          heading: 'How to Use',
+          body: 'Paste or drag in two versions of a text or code file and the diff updates instantly. Jump between changes, toggle whitespace/case sensitivity, export the result, or use keyboard shortcuts to work faster — nothing is saved after the tab closes, by design.',
+        },
+      ],
+    },
   ],
   certifications: [
     {
